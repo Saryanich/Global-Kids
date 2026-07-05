@@ -187,6 +187,14 @@
             margin-top: 0.6rem;
         }
 
+        .btn-logout {
+            background: rgba(239, 83, 80, 0.2);
+            color: #ef5350;
+            border: 1px solid rgba(239, 83, 80, 0.3);
+            margin-top: 0.6rem;
+            font-size: 0.9rem;
+        }
+
         .message {
             text-align: center;
             margin-top: 0.8rem;
@@ -196,6 +204,7 @@
 
         .error { color: #ef5350; }
         .success { color: #81c784; }
+        .info { color: #4fc3f7; }
 
         .hidden { display: none !important; }
 
@@ -211,12 +220,71 @@
             text-align: center;
             margin-top: 0.5rem;
         }
+
+        .auto-login-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            padding: 0.8rem;
+            background: rgba(79, 195, 247, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(79, 195, 247, 0.2);
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(79, 195, 247, 0.3);
+            border-top-color: #4fc3f7;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .remember-me label {
+            margin: 0;
+            text-transform: none;
+            letter-spacing: 0;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
 
-    <div class="container">
+    <!-- Экран загрузки -->
+    <div id="loadingScreen" class="glass-card">
+        <div class="logo-container">
+            <span class="logo-icon">🌍</span>
+        </div>
+        <h1>Global Kids</h1>
+        <div class="auto-login-indicator">
+            <div class="loading-spinner"></div>
+            <span style="color: #4fc3f7;">Проверяем данные...</span>
+        </div>
+        <div class="message info" id="loadingMessage"></div>
+    </div>
+
+    <div class="container hidden" id="mainContainer">
         <!-- Экран входа -->
         <div id="loginScreen" class="glass-card">
             <div class="logo-container">
@@ -232,9 +300,19 @@
                 <label>Пароль</label>
                 <input type="password" id="loginPassword" placeholder="········" autocomplete="current-password">
             </div>
+            <div class="remember-me">
+                <input type="checkbox" id="rememberMe">
+                <label for="rememberMe">Запомнить на этом устройстве</label>
+            </div>
             <button class="btn btn-primary" onclick="login()">🚀 Войти</button>
             <div id="authMessage" class="message"></div>
             <button class="btn btn-secondary" onclick="showRegister()">📝 Создать аккаунт</button>
+            
+            <!-- Кнопка для показа сохраненных аккаунтов -->
+            <div id="savedAccountsSection" class="hidden" style="margin-top: 1rem;">
+                <div style="color: #90caf9; font-size: 0.85rem; margin-bottom: 0.5rem;">💾 Сохраненные аккаунты:</div>
+                <div id="savedAccountsList" style="display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
+            </div>
         </div>
 
         <!-- Экран регистрации -->
@@ -294,6 +372,7 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // Настройка частиц
         particlesJS('particles-js', {
             particles: {
                 number: { value: 50, density: { enable: true, value_area: 800 } },
@@ -312,6 +391,224 @@
             retina_detect: true
         });
 
+        // ===== ФУНКЦИИ ДЛЯ РАБОТЫ С ЛОКАЛЬНЫМ ХРАНИЛИЩЕМ =====
+        
+        // Сохранение данных для автовхода
+        function saveCredentials(globalId, email, password, fullName) {
+            try {
+                const savedAccounts = JSON.parse(localStorage.getItem('globalKidsAccounts') || '[]');
+                
+                // Проверяем, есть ли уже такой аккаунт
+                const existingIndex = savedAccounts.findIndex(acc => acc.globalId === globalId);
+                
+                const accountData = {
+                    globalId: globalId,
+                    email: email,
+                    password: password, // В реальном приложении лучше шифровать
+                    fullName: fullName,
+                    lastLogin: new Date().toISOString(),
+                    deviceInfo: navigator.userAgent
+                };
+                
+                if (existingIndex >= 0) {
+                    savedAccounts[existingIndex] = accountData;
+                } else {
+                    savedAccounts.push(accountData);
+                }
+                
+                // Храним максимум 5 аккаунтов
+                if (savedAccounts.length > 5) {
+                    savedAccounts.sort((a, b) => new Date(b.lastLogin) - new Date(a.lastLogin));
+                    savedAccounts.splice(5);
+                }
+                
+                localStorage.setItem('globalKidsAccounts', JSON.stringify(savedAccounts));
+                localStorage.setItem('lastActiveAccount', globalId);
+                return true;
+            } catch (error) {
+                console.error('Ошибка сохранения:', error);
+                return false;
+            }
+        }
+
+        // Получение сохраненных аккаунтов
+        function getSavedAccounts() {
+            try {
+                return JSON.parse(localStorage.getItem('globalKidsAccounts') || '[]');
+            } catch (error) {
+                console.error('Ошибка чтения:', error);
+                return [];
+            }
+        }
+
+        // Получение последнего активного аккаунта
+        function getLastActiveAccount() {
+            const lastId = localStorage.getItem('lastActiveAccount');
+            if (!lastId) return null;
+            
+            const accounts = getSavedAccounts();
+            return accounts.find(acc => acc.globalId === lastId) || null;
+        }
+
+        // Удаление сохраненного аккаунта
+        function removeAccount(globalId) {
+            try {
+                const accounts = getSavedAccounts();
+                const filtered = accounts.filter(acc => acc.globalId !== globalId);
+                localStorage.setItem('globalKidsAccounts', JSON.stringify(filtered));
+                
+                if (localStorage.getItem('lastActiveAccount') === globalId) {
+                    localStorage.removeItem('lastActiveAccount');
+                }
+                return true;
+            } catch (error) {
+                console.error('Ошибка удаления:', error);
+                return false;
+            }
+        }
+
+        // Отображение сохраненных аккаунтов
+        function displaySavedAccounts() {
+            const accounts = getSavedAccounts();
+            const section = document.getElementById('savedAccountsSection');
+            const list = document.getElementById('savedAccountsList');
+            
+            if (accounts.length === 0) {
+                section.classList.add('hidden');
+                return;
+            }
+            
+            section.classList.remove('hidden');
+            list.innerHTML = accounts.map(acc => `
+                <button 
+                    onclick="quickLogin('${acc.globalId}')"
+                    style="
+                        background: rgba(79, 195, 247, 0.15);
+                        border: 1px solid rgba(79, 195, 247, 0.3);
+                        border-radius: 8px;
+                        padding: 0.5rem 0.8rem;
+                        color: #4fc3f7;
+                        cursor: pointer;
+                        font-size: 0.8rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        transition: all 0.2s;
+                    "
+                    onmouseover="this.style.background='rgba(79, 195, 247, 0.3)'"
+                    onmouseout="this.style.background='rgba(79, 195, 247, 0.15)'"
+                >
+                    <span>👤</span>
+                    <span>${acc.fullName || acc.globalId.substring(0, 8) + '...'}</span>
+                    <span 
+                        onclick="event.stopPropagation(); removeAccountClick('${acc.globalId}')"
+                        style="color: #ef5350; margin-left: 0.3rem; cursor: pointer;"
+                        title="Удалить"
+                    >✕</span>
+                </button>
+            `).join('');
+        }
+
+        // Быстрый вход по сохраненным данным
+        window.quickLogin = async (globalId) => {
+            const accounts = getSavedAccounts();
+            const account = accounts.find(acc => acc.globalId === globalId);
+            
+            if (!account) {
+                showMessage('authMessage', 'Аккаунт не найден', true);
+                return;
+            }
+            
+            document.getElementById('loginGlobalId').value = account.globalId;
+            document.getElementById('loginPassword').value = account.password;
+            document.getElementById('rememberMe').checked = true;
+            
+            await login();
+        };
+
+        // Удаление аккаунта (с подтверждением)
+        window.removeAccountClick = (globalId) => {
+            if (confirm('Удалить сохраненный аккаунт с этого устройства?')) {
+                removeAccount(globalId);
+                displaySavedAccounts();
+                showMessage('authMessage', 'Аккаунт удален с устройства', false);
+            }
+        };
+
+        // ===== АВТОВХОД ПРИ ЗАГРУЗКЕ =====
+        async function tryAutoLogin() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const mainContainer = document.getElementById('mainContainer');
+            const loadingMessage = document.getElementById('loadingMessage');
+            
+            // Проверяем, есть ли активная сессия Firebase
+            const currentUser = auth.currentUser;
+            if (currentUser) {
+                // Уже авторизован через Firebase
+                const childData = sessionStorage.getItem('currentChild');
+                if (childData) {
+                    window.location.href = 'tasks.html';
+                    return;
+                }
+            }
+            
+            // Проверяем локальное хранилище
+            const lastAccount = getLastActiveAccount();
+            
+            if (lastAccount) {
+                loadingMessage.textContent = `Входим как ${lastAccount.fullName || lastAccount.globalId.substring(0, 8)}...`;
+                
+                try {
+                    // Пытаемся войти с сохраненными данными
+                    const userDoc = await db.collection('globalkids').doc(lastAccount.globalId).get();
+                    
+                    if (userDoc.exists) {
+                        const userData = userDoc.data();
+                        
+                        // Проверяем, не изменился ли email
+                        if (userData.email === lastAccount.email) {
+                            await auth.signInWithEmailAndPassword(lastAccount.email, lastAccount.password);
+                            
+                            // Обновляем время последнего входа
+                            await db.collection('globalkids').doc(lastAccount.globalId).update({
+                                lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+                            
+                            // Сохраняем в sessionStorage
+                            sessionStorage.setItem('currentChild', JSON.stringify({
+                                globalId: lastAccount.globalId,
+                                fullName: userData.fullName,
+                                level: userData.level,
+                                email: userData.email,
+                                uid: userData.uid
+                            }));
+                            
+                            // Обновляем lastLogin в localStorage
+                            saveCredentials(lastAccount.globalId, lastAccount.email, lastAccount.password, userData.fullName);
+                            
+                            // Перенаправляем
+                            window.location.href = 'tasks.html';
+                            return;
+                        }
+                    }
+                } catch (error) {
+                    console.log('Автовход не удался:', error.message);
+                    loadingMessage.textContent = 'Автовход не удался, войдите вручную';
+                }
+            } else {
+                loadingMessage.textContent = 'Нет сохраненных данных';
+            }
+            
+            // Если автовход не удался - показываем форму входа
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+                mainContainer.classList.remove('hidden');
+                displaySavedAccounts();
+            }, 1500);
+        }
+
+        // ===== ОСНОВНЫЕ ФУНКЦИИ =====
+        
         function generateGlobalId() {
             const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             let result = '';
@@ -373,6 +670,7 @@
         window.showLogin = () => {
             document.getElementById('loginScreen').classList.remove('hidden');
             document.getElementById('registerScreen').classList.add('hidden');
+            displaySavedAccounts();
         };
 
         window.register = async () => {
@@ -449,11 +747,15 @@
                     });
                 }
 
+                // Сохраняем данные для автовхода
+                saveCredentials(childGlobalId, email, password, fullName);
+
                 showMessage('regMessage', `✅ Регистрация успешна! Ваш Global ID: ${childGlobalId}`);
                 
                 setTimeout(async () => {
                     document.getElementById('loginGlobalId').value = childGlobalId;
                     document.getElementById('loginPassword').value = password;
+                    document.getElementById('rememberMe').checked = true;
                     showLogin();
                     await login();
                 }, 2000);
@@ -470,6 +772,7 @@
         window.login = async () => {
             const globalId = document.getElementById('loginGlobalId').value.trim();
             const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
 
             if (!globalId || !password) {
                 return showMessage('authMessage', 'Заполните все поля', true);
@@ -496,6 +799,11 @@
                 await db.collection('globalkids').doc(globalId).update({
                     lastLogin: firebase.firestore.FieldValue.serverTimestamp()
                 });
+
+                // Сохраняем для автовхода если выбрано
+                if (rememberMe) {
+                    saveCredentials(globalId, email, password, userData.fullName);
+                }
 
                 // Сохраняем данные в sessionStorage для заданий
                 sessionStorage.setItem('currentChild', JSON.stringify({
@@ -525,6 +833,18 @@
             }
         };
 
+        // Выход из аккаунта (для страницы tasks)
+        window.logout = async () => {
+            try {
+                await auth.signOut();
+                sessionStorage.removeItem('currentChild');
+                localStorage.removeItem('lastActiveAccount');
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Ошибка выхода:', error);
+            }
+        };
+
         // Обработка Enter
         document.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -536,11 +856,17 @@
             }
         });
 
-        // Проверяем, есть ли активная сессия
+        // Запуск при загрузке страницы
+        window.addEventListener('load', () => {
+            // Проверяем автовход
+            tryAutoLogin();
+        });
+
+        // Слушатель изменений авторизации Firebase
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 const childData = sessionStorage.getItem('currentChild');
-                if (childData) {
+                if (childData && window.location.pathname.includes('index.html')) {
                     window.location.href = 'tasks.html';
                 }
             }
