@@ -17,7 +17,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        /* ... стили остаются те же ... */
         :root {
             --bg-deep: #0d1b2a;
             --math-color: #4fc3f7;
@@ -491,6 +490,10 @@
         let currentLevel = null;
         let completedTasks = [];
         let currentSubject = null;
+        let currentGame = null;
+        let gameScore = 0;
+        let gameQuestionIndex = 0;
+        let currentGameQuestions = [];
 
         const levelNames = {
             'kindergarten': 'Детский сад',
@@ -517,11 +520,11 @@
             return newArray;
         }
 
-        // ==================== ГЕНЕРАТОРЫ ВОПРОСОВ ====================
+        // ==================== ГЕНЕРАТОРЫ ВОПРОСОВ ПО КЛАССАМ ====================
         
-        // Математика - Счет предметов
+        // Детский сад - Счет предметов
         function generateCountObjects() {
-            const objects = ['🍎', '🍊', '🍋', '🍇', '🍓', '🍒', '🥝', '🍑', '🍌', '🍐'];
+            const objects = ['🍎', '🍊', '', '🍇', '🍓', '🍒', '', '', '🍌', '🍐'];
             const questions = [];
             for (let i = 0; i < 5; i++) {
                 const count = randomInt(1, 10);
@@ -541,7 +544,7 @@
             return questions;
         }
 
-        // Математика - Фигуры
+        // Детский сад - Фигуры
         function generateFindShapes() {
             const shapes = [
                 { name: 'круг', emoji: '⚪', desc: 'круглый' },
@@ -565,12 +568,12 @@
             return questions;
         }
 
-        // Математика - Больше-меньше
-        function generateCompareNumbers() {
+        // Детский сад и 1 класс - Больше-меньше
+        function generateCompareNumbers(maxNum = 20) {
             const questions = [];
             for (let i = 0; i < 5; i++) {
-                const a = randomInt(1, 20);
-                const b = randomInt(1, 20);
+                const a = randomInt(1, maxNum);
+                const b = randomInt(1, maxNum);
                 let correctAnswer;
                 if (a > b) correctAnswer = `${a} > ${b}`;
                 else if (a < b) correctAnswer = `${a} < ${b}`;
@@ -592,7 +595,7 @@
             return questions;
         }
 
-        // Математика - Сложение
+        // 1 класс - Сложение
         function generateAddition(maxNum) {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -614,7 +617,7 @@
             return questions;
         }
 
-        // Математика - Вычитание
+        // 1 класс - Вычитание
         function generateSubtraction(maxNum) {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -636,7 +639,30 @@
             return questions;
         }
 
-        // Математика - Умножение
+        // 1-2 класс - Числовой ряд
+        function generateNumberLine() {
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const start = randomInt(1, 50);
+                const step = randomInt(1, 5);
+                const sequence = [start, start + step, start + 2 * step, '?', start + 4 * step];
+                const correct = start + 3 * step;
+                const wrongAnswers = new Set();
+                while (wrongAnswers.size < 3) {
+                    const wrong = correct + randomInt(-10, 10);
+                    if (wrong !== correct && wrong > 0) wrongAnswers.add(wrong);
+                }
+                const options = shuffleArray([correct, ...wrongAnswers]);
+                questions.push({
+                    q: `Продолжи ряд: ${sequence.join(', ')}`,
+                    options: options.map(String),
+                    correct: options.indexOf(correct)
+                });
+            }
+            return questions;
+        }
+
+        // 2 класс - Умножение
         function generateMultiplication(maxA, maxB = 10) {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -658,29 +684,7 @@
             return questions;
         }
 
-        // Математика - Деление
-        function generateDivision() {
-            const questions = [];
-            for (let i = 0; i < 5; i++) {
-                const b = randomInt(2, 9);
-                const correct = randomInt(2, 10);
-                const a = b * correct;
-                const wrongAnswers = new Set();
-                while (wrongAnswers.size < 3) {
-                    const wrong = correct + randomInt(-3, 3);
-                    if (wrong !== correct && wrong > 0) wrongAnswers.add(wrong);
-                }
-                const options = shuffleArray([correct, ...wrongAnswers]);
-                questions.push({
-                    q: `Сколько будет ${a} ÷ ${b}?`,
-                    options: options.map(String),
-                    correct: options.indexOf(correct)
-                });
-            }
-            return questions;
-        }
-
-        // Математика - Время на часах
+        // 2-3 класс - Время на часах
         function generateTellTime() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -704,16 +708,16 @@
             return questions;
         }
 
-        // Математика - Периметр
+        // 3 класс - Периметр
         function generatePerimeter() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
-                const a = randomInt(2, 10);
-                const b = randomInt(2, 10);
+                const a = randomInt(2, 15);
+                const b = randomInt(2, 15);
                 const correct = 2 * (a + b);
                 const wrongAnswers = new Set();
                 while (wrongAnswers.size < 3) {
-                    const wrong = correct + randomInt(-10, 10);
+                    const wrong = correct + randomInt(-15, 15);
                     if (wrong !== correct && wrong > 0) wrongAnswers.add(wrong);
                 }
                 const options = shuffleArray([correct, ...wrongAnswers]);
@@ -726,16 +730,38 @@
             return questions;
         }
 
-        // Математика - Площадь
+        // 3-4 класс - Деление
+        function generateDivision() {
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const b = randomInt(2, 12);
+                const correct = randomInt(2, 12);
+                const a = b * correct;
+                const wrongAnswers = new Set();
+                while (wrongAnswers.size < 3) {
+                    const wrong = correct + randomInt(-3, 3);
+                    if (wrong !== correct && wrong > 0) wrongAnswers.add(wrong);
+                }
+                const options = shuffleArray([correct, ...wrongAnswers]);
+                questions.push({
+                    q: `Сколько будет ${a} ÷ ${b}?`,
+                    options: options.map(String),
+                    correct: options.indexOf(correct)
+                });
+            }
+            return questions;
+        }
+
+        // 4 класс - Площадь
         function generateArea() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
-                const a = randomInt(2, 10);
-                const b = randomInt(2, 10);
+                const a = randomInt(2, 15);
+                const b = randomInt(2, 15);
                 const correct = a * b;
                 const wrongAnswers = new Set();
                 while (wrongAnswers.size < 3) {
-                    const wrong = correct + randomInt(-10, 10);
+                    const wrong = correct + randomInt(-20, 20);
                     if (wrong !== correct && wrong > 0) wrongAnswers.add(wrong);
                 }
                 const options = shuffleArray([correct, ...wrongAnswers]);
@@ -748,54 +774,7 @@
             return questions;
         }
 
-        // Математика - Дроби
-        function generateFractions() {
-            const questions = [];
-            for (let i = 0; i < 5; i++) {
-                const denom = randomInt(2, 8);
-                const num1 = randomInt(1, denom - 1);
-                const num2 = randomInt(1, denom - num1);
-                const correctNum = num1 + num2;
-                const correctStr = `${correctNum}/${denom}`;
-                const wrongAnswers = new Set();
-                while (wrongAnswers.size < 3) {
-                    const wrongNum = randomInt(1, denom);
-                    const wrongStr = `${wrongNum}/${denom}`;
-                    if (wrongStr !== correctStr) wrongAnswers.add(wrongStr);
-                }
-                const options = shuffleArray([correctStr, ...wrongAnswers]);
-                questions.push({
-                    q: `Сложи дроби: ${num1}/${denom} + ${num2}/${denom} = ?`,
-                    options: options,
-                    correct: options.indexOf(correctStr)
-                });
-            }
-            return questions;
-        }
-
-        // Математика - Проценты
-        function generatePercentages() {
-            const questions = [];
-            for (let i = 0; i < 5; i++) {
-                const number = randomInt(1, 10) * 10;
-                const percent = randomInt(1, 5) * 10;
-                const correct = (number * percent) / 100;
-                const wrongAnswers = new Set();
-                while (wrongAnswers.size < 3) {
-                    const wrong = correct + randomInt(-10, 10);
-                    if (wrong !== correct && wrong > 0) wrongAnswers.add(wrong);
-                }
-                const options = shuffleArray([correct, ...wrongAnswers]);
-                questions.push({
-                    q: `Найди ${percent}% от числа ${number}`,
-                    options: options.map(String),
-                    correct: options.indexOf(correct)
-                });
-            }
-            return questions;
-        }
-
-        // Математика - Углы
+        // 4 класс - Углы
         function generateGeometryAngles() {
             const angles = [
                 { name: 'острый', desc: 'меньше 90°', examples: '30°, 45°, 60°' },
@@ -818,22 +797,185 @@
             return questions;
         }
 
-        // Математика - Числовой ряд
-        function generateNumberLine() {
+        // 5 класс - СЛОЖЕНИЕ ДЕСЯТИЧНЫХ ДРОБЕЙ
+        function generateDecimalAddition() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
-                const start = randomInt(1, 50);
-                const step = randomInt(1, 5);
-                const sequence = [start, start + step, start + 2 * step, '?', start + 4 * step];
-                const correct = start + 3 * step;
+                const a = (randomInt(1, 100) / 10).toFixed(1);
+                const b = (randomInt(1, 100) / 10).toFixed(1);
+                const correct = (parseFloat(a) + parseFloat(b)).toFixed(1);
                 const wrongAnswers = new Set();
                 while (wrongAnswers.size < 3) {
-                    const wrong = correct + randomInt(-10, 10);
+                    const wrong = (parseFloat(correct) + randomInt(-5, 5) / 10).toFixed(1);
+                    if (wrong !== correct && parseFloat(wrong) > 0) wrongAnswers.add(wrong);
+                }
+                const options = shuffleArray([correct, ...wrongAnswers]);
+                questions.push({
+                    q: `Вычисли: ${a} + ${b} = ?`,
+                    options: options,
+                    correct: options.indexOf(correct)
+                });
+            }
+            return questions;
+        }
+
+        // 5 класс - ВЫЧИТАНИЕ ДЕСЯТИЧНЫХ ДРОБЕЙ
+        function generateDecimalSubtraction() {
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const a = (randomInt(20, 100) / 10).toFixed(1);
+                const b = (randomInt(1, Math.floor(parseFloat(a) * 10)) / 10).toFixed(1);
+                const correct = (parseFloat(a) - parseFloat(b)).toFixed(1);
+                const wrongAnswers = new Set();
+                while (wrongAnswers.size < 3) {
+                    const wrong = (parseFloat(correct) + randomInt(-3, 3) / 10).toFixed(1);
+                    if (wrong !== correct && parseFloat(wrong) >= 0) wrongAnswers.add(wrong);
+                }
+                const options = shuffleArray([correct, ...wrongAnswers]);
+                questions.push({
+                    q: `Вычисли: ${a} - ${b} = ?`,
+                    options: options,
+                    correct: options.indexOf(correct)
+                });
+            }
+            return questions;
+        }
+
+        // 5 класс - УМНОЖЕНИЕ ДЕСЯТИЧНЫХ ДРОБЕЙ
+        function generateDecimalMultiplication() {
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const a = (randomInt(1, 50) / 10).toFixed(1);
+                const b = randomInt(2, 9);
+                const correct = (parseFloat(a) * b).toFixed(1);
+                const wrongAnswers = new Set();
+                while (wrongAnswers.size < 3) {
+                    const wrong = (parseFloat(correct) + randomInt(-5, 5)).toFixed(1);
+                    if (wrong !== correct && parseFloat(wrong) > 0) wrongAnswers.add(wrong);
+                }
+                const options = shuffleArray([correct, ...wrongAnswers]);
+                questions.push({
+                    q: `Вычисли: ${a} × ${b} = ?`,
+                    options: options,
+                    correct: options.indexOf(correct)
+                });
+            }
+            return questions;
+        }
+
+        // 5 класс - ДЕЛЕНИЕ ДЕСЯТИЧНЫХ ДРОБЕЙ
+        function generateDecimalDivision() {
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const divisor = randomInt(2, 9);
+                const quotient = randomInt(1, 20);
+                const dividend = (divisor * quotient / 10).toFixed(1);
+                const correct = quotient / 10;
+                const wrongAnswers = new Set();
+                while (wrongAnswers.size < 3) {
+                    const wrong = correct + randomInt(-3, 3) / 10;
+                    if (wrong !== correct && wrong > 0) wrongAnswers.add(wrong.toFixed(1));
+                }
+                const options = shuffleArray([correct.toFixed(1), ...wrongAnswers]);
+                questions.push({
+                    q: `Вычисли: ${dividend} ÷ ${divisor} = ?`,
+                    options: options,
+                    correct: options.indexOf(correct.toFixed(1))
+                });
+            }
+            return questions;
+        }
+
+        // 5 класс - СРАВНЕНИЕ ДЕСЯТИЧНЫХ ДРОБЕЙ
+        function generateDecimalCompare() {
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const a = (randomInt(1, 100) / 10).toFixed(1);
+                const b = (randomInt(1, 100) / 10).toFixed(1);
+                let correctAnswer;
+                if (parseFloat(a) > parseFloat(b)) correctAnswer = `${a} > ${b}`;
+                else if (parseFloat(a) < parseFloat(b)) correctAnswer = `${a} < ${b}`;
+                else correctAnswer = `${a} = ${b}`;
+                
+                const wrongAnswers = [
+                    `${a} < ${b}`,
+                    `${a} > ${b}`,
+                    `${a} = ${b}`
+                ].filter(ans => ans !== correctAnswer);
+                
+                const options = shuffleArray([correctAnswer, ...wrongAnswers.slice(0, 3)]);
+                questions.push({
+                    q: `Сравни десятичные дроби: ${a} и ${b}. Какой знак поставить?`,
+                    options: options,
+                    correct: options.indexOf(correctAnswer)
+                });
+            }
+            return questions;
+        }
+
+        // 5 класс - Округление десятичных дробей
+        function generateRounding() {
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const num = (randomInt(1, 1000) / 10).toFixed(1);
+                const rounded = Math.round(parseFloat(num));
+                const wrongAnswers = new Set();
+                while (wrongAnswers.size < 3) {
+                    const wrong = rounded + randomInt(-3, 3);
+                    if (wrong !== rounded && wrong >= 0) wrongAnswers.add(wrong);
+                }
+                const options = shuffleArray([rounded, ...wrongAnswers]);
+                questions.push({
+                    q: `Округли число ${num} до целых`,
+                    options: options.map(String),
+                    correct: options.indexOf(rounded)
+                });
+            }
+            return questions;
+        }
+
+        // 5 класс - Обыкновенные дроби
+        function generateFractions() {
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const denom = randomInt(2, 12);
+                const num1 = randomInt(1, denom - 1);
+                const num2 = randomInt(1, denom - num1);
+                const correctNum = num1 + num2;
+                const correctStr = correctNum === denom ? '1' : `${correctNum}/${denom}`;
+                const wrongAnswers = new Set();
+                while (wrongAnswers.size < 3) {
+                    const wrongNum = randomInt(1, denom + 2);
+                    let wrongStr;
+                    if (wrongNum === denom) wrongStr = '1';
+                    else wrongStr = `${wrongNum}/${denom}`;
+                    if (wrongStr !== correctStr) wrongAnswers.add(wrongStr);
+                }
+                const options = shuffleArray([correctStr, ...wrongAnswers]);
+                questions.push({
+                    q: `Вычисли: ${num1}/${denom} + ${num2}/${denom} = ?`,
+                    options: options,
+                    correct: options.indexOf(correctStr)
+                });
+            }
+            return questions;
+        }
+
+        // 5 класс - Проценты
+        function generatePercentages() {
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const number = randomInt(1, 20) * 10;
+                const percent = randomInt(1, 10) * 10;
+                const correct = (number * percent) / 100;
+                const wrongAnswers = new Set();
+                while (wrongAnswers.size < 3) {
+                    const wrong = correct + randomInt(-20, 20);
                     if (wrong !== correct && wrong > 0) wrongAnswers.add(wrong);
                 }
                 const options = shuffleArray([correct, ...wrongAnswers]);
                 questions.push({
-                    q: `Продолжи ряд: ${sequence.join(', ')}`,
+                    q: `Найди ${percent}% от числа ${number}`,
                     options: options.map(String),
                     correct: options.indexOf(correct)
                 });
@@ -854,8 +996,6 @@
                 { word: 'т...традь', answer: 'е' },
                 { word: 'р...бята', answer: 'е' },
                 { word: 'д...журный', answer: 'е' },
-                { word: 'за...ц', answer: 'я' },
-                { word: 'л...сица', answer: 'и' },
             ];
             const selected = shuffleArray(words).slice(0, 5);
             return selected.map(w => {
@@ -878,13 +1018,10 @@
                 { word: 'красивый', type: 'прилагательное' },
                 { word: 'быстро', type: 'наречие' },
                 { word: 'он', type: 'местоимение' },
-                { word: 'в', type: 'предлог' },
-                { word: 'и', type: 'союз' },
-                { word: 'ах!', type: 'междометие' },
             ];
             const selected = shuffleArray(words).slice(0, 5);
             return selected.map(w => {
-                const types = ['существительное', 'глагол', 'прилагательное', 'наречие', 'местоимение', 'предлог', 'союз'];
+                const types = ['существительное', 'глагол', 'прилагательное', 'наречие', 'местоимение'];
                 const wrongTypes = shuffleArray(types.filter(t => t !== w.type)).slice(0, 3);
                 const options = shuffleArray([w.type, ...wrongTypes]);
                 return {
@@ -903,13 +1040,6 @@
                 { q: 'Кто разбил золотое яичко?', options: ['Дед', 'Баба', 'Мышка', 'Курочка'], correct: 2 },
                 { q: 'Что несла Красная Шапочка?', options: ['Пирожки', 'Конфеты', 'Фрукты', 'Овощи'], correct: 0 },
                 { q: 'Кто украл солнце в сказке Чуковского?', options: ['Змея', 'Дракон', 'Крокодил', 'Ящерица'], correct: 2 },
-                { q: 'Из чего был сделан Буратино?', options: ['Из дуба', 'Из сосны', 'Из полена', 'Из берёзы'], correct: 2 },
-                { q: 'Кто помог Золушке?', options: ['Фея', 'Волшебник', 'Принц', 'Сестры'], correct: 0 },
-                { q: 'Сколько гномов было у Белоснежки?', options: ['5', '6', '7', '8'], correct: 2 },
-                { q: 'Кто победил Кощея Бессмертного?', options: ['Иван-дурак', 'Иван-царевич', 'Богатырь', 'Колдун'], correct: 1 },
-                { q: 'Кто жил в теремке?', options: ['Только звери', 'Только птицы', 'Разные животные', 'Насекомые'], correct: 2 },
-                { q: 'Что потеряла Золушка?', options: ['Туфельку', 'Кольцо', 'Серьгу', 'Браслет'], correct: 0 },
-                { q: 'Кто спас Муху-Цокотуху?', options: ['Комар', 'Паук', 'Жук', 'Муравей'], correct: 0 },
             ];
             return shuffleArray(allQuestions).slice(0, 5);
         }
@@ -922,9 +1052,6 @@
                 { start: 'Поспешишь...', end: 'людей насмешишь' },
                 { start: 'Делу время...', end: 'потехе час' },
                 { start: 'Ученье свет...', end: 'а неученье тьма' },
-                { start: 'Труд кормит...', end: 'а лень портит' },
-                { start: 'Слово не воробей...', end: 'вылетит - не поймаешь' },
-                { start: 'Лучше поздно...', end: 'чем никогда' },
             ];
             const selected = shuffleArray(proverbs).slice(0, 5);
             return selected.map(p => {
@@ -947,11 +1074,6 @@
                 { q: 'Когда собирают урожай?', options: ['Весной', 'Летом', 'Осенью', 'Зимой'], correct: 2 },
                 { q: 'Когда медведь спит в берлоге?', options: ['Весной', 'Летом', 'Осенью', 'Зимой'], correct: 3 },
                 { q: 'Когда птицы вьют гнёзда?', options: ['Зимой', 'Осенью', 'Летом', 'Весной'], correct: 3 },
-                { q: 'Когда цветут подснежники?', options: ['Зимой', 'Весной', 'Летом', 'Осенью'], correct: 1 },
-                { q: 'Когда день самый длинный?', options: ['Зимой', 'Весной', 'Летом', 'Осенью'], correct: 2 },
-                { q: 'Когда замерзают реки?', options: ['Весной', 'Летом', 'Осенью', 'Зимой'], correct: 3 },
-                { q: 'Когда прилетают снегири?', options: ['Весной', 'Летом', 'Осенью', 'Зимой'], correct: 3 },
-                { q: 'Когда распускаются почки?', options: ['Зимой', 'Весной', 'Летом', 'Осенью'], correct: 1 },
             ];
             return shuffleArray(allQuestions).slice(0, 5);
         }
@@ -964,9 +1086,6 @@
                 { animal: 'Лиса', home: 'Нора' },
                 { animal: 'Птица', home: 'Гнездо' },
                 { animal: 'Бобр', home: 'Хатка' },
-                { animal: 'Волк', home: 'Логово' },
-                { animal: 'Мышь', home: 'Норка' },
-                { animal: 'Муравей', home: 'Муравейник' },
             ];
             const selected = shuffleArray(animals).slice(0, 5);
             return selected.map(a => {
@@ -1007,31 +1126,47 @@
 
         // Карта генераторов
         const questionGenerators = {
+            // Детский сад
             count_objects: generateCountObjects,
             find_shapes: generateFindShapes,
-            compare_numbers: generateCompareNumbers,
+            compare_numbers: () => generateCompareNumbers(10),
+            
+            // 1 класс
             addition_10: () => generateAddition(10),
             subtraction_10: () => generateSubtraction(10),
             number_line: generateNumberLine,
+            
+            // 2 класс
             multiplication_2_3: () => generateMultiplication(3),
             multiplication_table: () => generateMultiplication(10),
             measure_length: () => generateAddition(50),
             tell_time: generateTellTime,
+            
+            // 3 класс
             perimeter: generatePerimeter,
             division_100: generateDivision,
             area: generateArea,
+            
+            // 4 класс
             big_numbers: () => generateAddition(1000),
             unit_conversion: () => generateMultiplication(10),
-            fractions: generateFractions,
-            percentages: generatePercentages,
             geometry_angles: generateGeometryAngles,
             
+            // 5 класс - НОВЫЕ ГЕНЕРАТОРЫ
+            decimal_addition: generateDecimalAddition,
+            decimal_subtraction: generateDecimalSubtraction,
+            decimal_multiplication: generateDecimalMultiplication,
+            decimal_division: generateDecimalDivision,
+            decimal_compare: generateDecimalCompare,
+            rounding: generateRounding,
+            fractions: generateFractions,
+            percentages: generatePercentages,
+            
+            // Русский язык
             find_letter: generateVocabulary,
             syllables: generateVocabulary,
-            color_letter: generateVocabulary,
             vocabulary: generateVocabulary,
             stress: generateVocabulary,
-            alphabet_order: generateVocabulary,
             nouns: generatePartsOfSpeech,
             prepositions: generateVocabulary,
             root_words: generateVocabulary,
@@ -1045,6 +1180,7 @@
             spelling: generateVocabulary,
             morphology: generatePartsOfSpeech,
             
+            // Литература
             fairy_tale: generateFairyTale,
             guess_hero: generateFairyTale,
             poem: generateFairyTale,
@@ -1064,6 +1200,7 @@
             drama: generateFairyTale,
             lyric: generateFairyTale,
             
+            // Окружающий мир
             seasons: generateSeasons,
             animal_homes: generateAnimals,
             plant_parts: generateSeasons,
@@ -1084,7 +1221,7 @@
             world_capitals: generatePlanets,
         };
 
-        // Задания остаются те же, но с правильными типами игр
+        // База заданий с правильными типами игр для каждого класса
         const tasksDatabase = {
             math: {
                 kindergarten: [
@@ -1113,9 +1250,11 @@
                     { id: 'm4_3', title: '📐 Виды углов', desc: 'Определи вид угла', reward: 15, game: 'geometry_angles' },
                 ],
                 5: [
-                    { id: 'm5_1', title: '🔢 Дроби', desc: 'Сложение дробей', reward: 18, game: 'fractions' },
+                    { id: 'm5_1', title: '🔢 Десятичные дроби', desc: 'Сложение десятичных дробей', reward: 18, game: 'decimal_addition' },
                     { id: 'm5_2', title: '📊 Проценты', desc: 'Найди процент от числа', reward: 15, game: 'percentages' },
-                    { id: 'm5_3', title: '📐 Геометрия', desc: 'Определи виды углов', reward: 18, game: 'geometry_angles' },
+                    { id: 'm5_3', title: '➗ Деление десятичных дробей', desc: 'Раздели десятичную дробь', reward: 18, game: 'decimal_division' },
+                    { id: 'm5_4', title: '🔣 Обыкновенные дроби', desc: 'Сложение дробей', reward: 18, game: 'fractions' },
+                    { id: 'm5_5', title: '📐 Округление', desc: 'Округли до целых', reward: 15, game: 'rounding' },
                 ]
             },
             russian: {
@@ -1216,12 +1355,7 @@
             }
         };
 
-        // ... остальной код (переменные, функции loadChildData, showSubjects, startGame и т.д.) остается тем же ...
-        
-        let currentGame = null;
-        let gameScore = 0;
-        let gameQuestionIndex = 0;
-        let currentGameQuestions = [];
+        // ==================== ОСНОВНЫЕ ФУНКЦИИ ====================
 
         async function loadChildData() {
             const childDataStr = sessionStorage.getItem('currentChild');
@@ -1462,3 +1596,4 @@
     </script>
 </body>
 </html>
+
