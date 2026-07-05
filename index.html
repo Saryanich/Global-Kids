@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Global Kids</title>
+    <title>Global Kids - Вход</title>
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -56,7 +56,7 @@
             position: relative;
             z-index: 10;
             width: 100%;
-            max-width: 500px;
+            max-width: 420px;
         }
 
         .glass-card {
@@ -180,12 +180,6 @@
             box-shadow: 0 6px 18px rgba(129, 199, 132, 0.3);
         }
 
-        .btn-danger {
-            background: linear-gradient(135deg, #ef5350, #c62828);
-            color: white;
-            box-shadow: 0 6px 18px rgba(239, 83, 80, 0.3);
-        }
-
         .btn-secondary {
             background: rgba(255, 255, 255, 0.06);
             color: #ccc;
@@ -205,135 +199,6 @@
 
         .hidden { display: none !important; }
 
-        /* Dashboard Styles */
-        .user-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .user-info h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.2rem;
-        }
-
-        .user-info .class-badge {
-            display: inline-block;
-            background: rgba(79, 195, 247, 0.2);
-            color: #4fc3f7;
-            padding: 0.2rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .gloins-display {
-            background: linear-gradient(135deg, #ffb74d, #f57c00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .task-card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 14px;
-            padding: 1rem;
-            margin-bottom: 0.8rem;
-            transition: all 0.2s;
-        }
-
-        .task-card:hover {
-            border-color: rgba(79, 195, 247, 0.3);
-            background: rgba(255,255,255,0.07);
-        }
-
-        .task-card .task-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .task-card .task-title {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .task-card .task-reward {
-            color: #ffb74d;
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-
-        .task-card .task-desc {
-            color: #90a4ae;
-            font-size: 0.8rem;
-            margin-bottom: 0.6rem;
-        }
-
-        .task-card .btn {
-            width: auto;
-            padding: 0.5rem 1rem;
-            font-size: 0.8rem;
-            margin-top: 0;
-        }
-
-        .leaderboard-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.7rem 0.8rem;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-
-        .leaderboard-item .rank {
-            width: 30px;
-            font-weight: 700;
-            color: #ffb74d;
-        }
-
-        .leaderboard-item .name {
-            flex: 1;
-            margin: 0 0.5rem;
-        }
-
-        .leaderboard-item .score {
-            font-weight: 700;
-            color: #4fc3f7;
-        }
-
-        .nav-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .nav-tab {
-            flex: 1;
-            text-align: center;
-            padding: 0.6rem;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.04);
-            color: #90a4ae;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .nav-tab.active {
-            background: rgba(79, 195, 247, 0.2);
-            color: #4fc3f7;
-            border: 1px solid rgba(79, 195, 247, 0.3);
-        }
-
-        /* Стиль для Global ID */
         .global-id-display {
             background: rgba(79, 195, 247, 0.1);
             border: 1px solid rgba(79, 195, 247, 0.3);
@@ -358,10 +223,10 @@
                 <span class="logo-icon">🌍</span>
             </div>
             <h1>Global Kids</h1>
-            <div class="subtitle">👧👦 Учись, играй, зарабатывай gloins!</div>
+            <div class="subtitle">👧👦 Вход в систему</div>
             <div class="input-group">
                 <label>Global ID ребёнка</label>
-                <input type="text" id="loginGlobalId" placeholder="Введите Global ID ребёнка" autocomplete="username">
+                <input type="text" id="loginGlobalId" placeholder="Введите Global ID" autocomplete="username">
             </div>
             <div class="input-group">
                 <label>Пароль</label>
@@ -369,7 +234,7 @@
             </div>
             <button class="btn btn-primary" onclick="login()">🚀 Войти</button>
             <div id="authMessage" class="message"></div>
-            <button class="btn btn-secondary" onclick="showRegister()">📝 Создать аккаунт ребёнка</button>
+            <button class="btn btn-secondary" onclick="showRegister()">📝 Создать аккаунт</button>
         </div>
 
         <!-- Экран регистрации -->
@@ -394,6 +259,7 @@
             <div class="input-group">
                 <label>Global ID взрослого (родитель/учитель)</label>
                 <input type="text" id="regAdultGlobalId" placeholder="Введите Global ID взрослого">
+                <button class="btn btn-secondary" onclick="checkAdultGlobalId()" style="margin-top:0.5rem;">🔍 Проверить Global ID</button>
                 <div class="global-id-display" id="adultCheckResult" style="display:none;"></div>
             </div>
             <div class="input-group">
@@ -411,36 +277,6 @@
             <button class="btn btn-success" onclick="register()">✅ Зарегистрироваться</button>
             <div id="regMessage" class="message"></div>
             <button class="btn btn-secondary" onclick="showLogin()">← Назад ко входу</button>
-        </div>
-
-        <!-- Панель управления -->
-        <div id="dashboardScreen" class="glass-card hidden">
-            <div class="user-header">
-                <div class="user-info">
-                    <h3 id="dashName">Имя</h3>
-                    <span class="class-badge" id="dashLevel">Класс</span>
-                </div>
-                <div class="gloins-display" id="dashGloins">🪙 0 gloins</div>
-            </div>
-            <div class="global-id-display" id="dashGlobalId" style="margin-bottom:1rem;"></div>
-
-            <div class="nav-tabs">
-                <div class="nav-tab active" onclick="switchTab('tasks')">📋 Задания</div>
-                <div class="nav-tab" onclick="switchTab('leaderboard')">🏆 Рейтинг</div>
-            </div>
-
-            <!-- Задания -->
-            <div id="tasksContainer">
-                <div id="tasksList"></div>
-            </div>
-
-            <!-- Рейтинг -->
-            <div id="leaderboardContainer" class="hidden">
-                <h4 style="margin-bottom:1rem; color:#b0bec5;">🏆 Топ по gloins</h4>
-                <div id="leaderboardList"></div>
-            </div>
-
-            <button class="btn btn-danger" onclick="logout()" style="margin-top:1.5rem;">🚪 Выйти</button>
         </div>
     </div>
 
@@ -476,11 +312,6 @@
             retina_detect: true
         });
 
-        let currentUserData = null;
-        let completedTasks = [];
-        let verifiedAdultGlobalId = null;
-
-        // Функция генерации Global ID (как в IT Global)
         function generateGlobalId() {
             const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             let result = '';
@@ -490,117 +321,6 @@
             return result;
         }
 
-        // Проверка существования Global ID в коллекции users (как в IT Global)
-        async function checkGlobalIdExists(globalId) {
-            try {
-                const usersRef = db.collection('users');
-                const q = usersRef.where('globalId', '==', globalId);
-                const snapshot = await q.get();
-                return !snapshot.empty;
-            } catch (error) {
-                console.error('Ошибка проверки Global ID:', error);
-                return false;
-            }
-        }
-
-        // Проверка Global ID взрослого при регистрации
-        async function verifyAdultGlobalId(globalId) {
-            if (!globalId || globalId.trim() === '') {
-                return { valid: false, message: 'Введите Global ID взрослого' };
-            }
-
-            const exists = await checkGlobalIdExists(globalId.trim());
-            
-            if (exists) {
-                // Получаем данные взрослого
-                const usersRef = db.collection('users');
-                const q = usersRef.where('globalId', '==', globalId.trim());
-                const snapshot = await q.get();
-                
-                if (!snapshot.empty) {
-                    const adultData = snapshot.docs[0].data();
-                    return {
-                        valid: true,
-                        message: `✅ Взрослый найден: ${adultData.fullName || adultData.email || 'Пользователь'}`,
-                        adultUid: snapshot.docs[0].id,
-                        adultData: adultData
-                    };
-                }
-            }
-            
-            return { valid: false, message: '❌ Global ID взрослого не найден в системе IT Global' };
-        }
-
-        // Обработчик проверки Global ID взрослого в реальном времени
-        document.addEventListener('DOMContentLoaded', () => {
-            const adultGlobalIdInput = document.getElementById('regAdultGlobalId');
-            if (adultGlobalIdInput) {
-                adultGlobalIdInput.addEventListener('blur', async () => {
-                    const globalId = adultGlobalIdInput.value.trim();
-                    if (globalId.length >= 22) {
-                        const result = await verifyAdultGlobalId(globalId);
-                        const resultDiv = document.getElementById('adultCheckResult');
-                        resultDiv.style.display = 'block';
-                        resultDiv.textContent = result.message;
-                        resultDiv.style.color = result.valid ? '#81c784' : '#ef5350';
-                        resultDiv.style.borderColor = result.valid ? '#81c784' : '#ef5350';
-                        
-                        if (result.valid) {
-                            verifiedAdultGlobalId = globalId;
-                        } else {
-                            verifiedAdultGlobalId = null;
-                        }
-                    }
-                });
-            }
-        });
-
-        // Школьные задания по уровням
-        const tasksByLevel = {
-            kindergarten: [
-                { id: 'k1', title: '🍎 Сосчитай фрукты', desc: 'Посчитай от 1 до 10 и обратно', reward: 5, subject: 'Математика' },
-                { id: 'k2', title: '🔤 Выучи букву', desc: 'Назови 5 слов на букву "А"', reward: 5, subject: 'Чтение' },
-                { id: 'k3', title: '🌈 Назови цвета', desc: 'Назови 7 цветов радуги', reward: 5, subject: 'Окружающий мир' },
-                { id: 'k4', title: '🧩 Собери пазл', desc: 'Собери картинку из 6 частей', reward: 10, subject: 'Логика' },
-                { id: 'k5', title: '🎨 Нарисуй семью', desc: 'Нарисуй свою семью и расскажи о ней', reward: 10, subject: 'Творчество' },
-            ],
-            1: [
-                { id: '1_1', title: '➕ Сложение до 10', desc: 'Реши 5 примеров: 3+2, 7+1, 4+4, 6+3, 5+5', reward: 8, subject: 'Математика' },
-                { id: '1_2', title: '📖 Прочитай текст', desc: 'Прочитай короткий рассказ из 5 предложений', reward: 10, subject: 'Чтение' },
-                { id: '1_3', title: '✏️ Спиши слова', desc: 'Спиши 10 словарных слов без ошибок', reward: 8, subject: 'Русский язык' },
-                { id: '1_4', title: '🌳 Времена года', desc: 'Назови признаки каждого времени года', reward: 7, subject: 'Окружающий мир' },
-                { id: '1_5', title: '🔢 Счет до 100', desc: 'Посчитай десятками до 100', reward: 10, subject: 'Математика' },
-            ],
-            2: [
-                { id: '2_1', title: '➖ Вычитание до 20', desc: 'Реши 5 примеров: 15-7, 18-9, 12-5, 20-8, 16-7', reward: 10, subject: 'Математика' },
-                { id: '2_2', title: '📝 Диктант', desc: 'Напиши диктант из 20 слов без ошибок', reward: 15, subject: 'Русский язык' },
-                { id: '2_3', title: '📚 Пересказ', desc: 'Прочитай и перескажи рассказ (10 предложений)', reward: 12, subject: 'Литература' },
-                { id: '2_4', title: '🐾 Животные', desc: 'Назови 10 диких и 10 домашних животных', reward: 10, subject: 'Окружающий мир' },
-                { id: '2_5', title: '✖️ Таблица на 2,3', desc: 'Выучи таблицу умножения на 2 и 3', reward: 15, subject: 'Математика' },
-            ],
-            3: [
-                { id: '3_1', title: '✖️ Таблица умножения', desc: 'Реши 10 примеров на умножение до 10', reward: 15, subject: 'Математика' },
-                { id: '3_2', title: '📏 Периметр', desc: 'Найди периметр прямоугольника 5×3 см', reward: 12, subject: 'Математика' },
-                { id: '3_3', title: '📝 Части речи', desc: 'Определи части речи в 5 предложениях', reward: 12, subject: 'Русский язык' },
-                { id: '3_4', title: '🗺️ Города России', desc: 'Назови и покажи на карте 5 городов', reward: 10, subject: 'Окружающий мир' },
-                { id: '3_5', title: '🔤 English words', desc: 'Выучи 10 новых английских слов', reward: 15, subject: 'Английский язык' },
-            ],
-            4: [
-                { id: '4_1', title: '➗ Деление', desc: 'Реши 8 примеров на деление: 72:8, 54:6, 63:7...', reward: 15, subject: 'Математика' },
-                { id: '4_2', title: '📐 Площадь', desc: 'Найди площадь прямоугольника 7×4 см', reward: 12, subject: 'Математика' },
-                { id: '4_3', title: '📖 Падежи', desc: 'Просклоняй слово "школа" по падежам', reward: 15, subject: 'Русский язык' },
-                { id: '4_4', title: '🌍 Природные зоны', desc: 'Назови 5 природных зон России', reward: 12, subject: 'Окружающий мир' },
-                { id: '4_5', title: '🗣️ English dialogue', desc: 'Составь диалог на английском (6 реплик)', reward: 18, subject: 'Английский язык' },
-            ],
-            5: [
-                { id: '5_1', title: '🔢 Дроби', desc: 'Сложи дроби: 1/4 + 2/4, 3/8 + 2/8', reward: 18, subject: 'Математика' },
-                { id: '5_2', title: '📊 Проценты', desc: 'Найди 20% от 150 и 15% от 200', reward: 15, subject: 'Математика' },
-                { id: '5_3', title: '📝 Сочинение', desc: 'Напиши сочинение "Мой день" (10 предложений)', reward: 20, subject: 'Русский язык' },
-                { id: '5_4', title: '🏛️ История', desc: 'Расскажи о Древней Руси (5 фактов)', reward: 15, subject: 'История' },
-                { id: '5_5', title: '🔬 Наука', desc: 'Проведи опыт: смешай соду и уксус, опиши реакцию', reward: 20, subject: 'Окружающий мир' },
-            ]
-        };
-
         function showMessage(elementId, text, isError = false) {
             const el = document.getElementById(elementId);
             if (el) {
@@ -609,18 +329,50 @@
             }
         }
 
+        // Проверка Global ID взрослого
+        window.checkAdultGlobalId = async () => {
+            const adultGlobalId = document.getElementById('regAdultGlobalId').value.trim();
+            const resultDiv = document.getElementById('adultCheckResult');
+            
+            if (!adultGlobalId) {
+                resultDiv.style.display = 'block';
+                resultDiv.textContent = '❌ Введите Global ID взрослого';
+                resultDiv.style.color = '#ef5350';
+                return;
+            }
+
+            try {
+                const usersRef = db.collection('users');
+                const q = usersRef.where('globalId', '==', adultGlobalId);
+                const snapshot = await q.get();
+                
+                resultDiv.style.display = 'block';
+                
+                if (!snapshot.empty) {
+                    const adultData = snapshot.docs[0].data();
+                    resultDiv.textContent = `✅ Найден: ${adultData.fullName || adultData.email || 'Пользователь'}`;
+                    resultDiv.style.color = '#81c784';
+                } else {
+                    resultDiv.textContent = '❌ Global ID взрослого не найден в системе';
+                    resultDiv.style.color = '#ef5350';
+                }
+            } catch (error) {
+                console.error('Ошибка проверки:', error);
+                resultDiv.style.display = 'block';
+                resultDiv.textContent = '❌ Ошибка проверки Global ID';
+                resultDiv.style.color = '#ef5350';
+            }
+        };
+
         window.showRegister = () => {
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('registerScreen').classList.remove('hidden');
-            document.getElementById('dashboardScreen').classList.add('hidden');
-            verifiedAdultGlobalId = null;
             document.getElementById('adultCheckResult').style.display = 'none';
         };
 
         window.showLogin = () => {
             document.getElementById('loginScreen').classList.remove('hidden');
             document.getElementById('registerScreen').classList.add('hidden');
-            document.getElementById('dashboardScreen').classList.add('hidden');
         };
 
         window.register = async () => {
@@ -636,26 +388,31 @@
             if (password.length < 6) {
                 return showMessage('regMessage', 'Пароль должен быть минимум 6 символов', true);
             }
-
-            // Проверяем Global ID взрослого
             if (!adultGlobalId) {
                 return showMessage('regMessage', 'Введите Global ID взрослого', true);
             }
 
-            const adultVerification = await verifyAdultGlobalId(adultGlobalId);
-            if (!adultVerification.valid) {
-                return showMessage('regMessage', 'Global ID взрослого не найден в системе IT Global', true);
-            }
-
             try {
+                // Проверяем существование взрослого
+                const usersRef = db.collection('users');
+                const q = usersRef.where('globalId', '==', adultGlobalId);
+                const snapshot = await q.get();
+                
+                if (snapshot.empty) {
+                    return showMessage('regMessage', 'Global ID взрослого не найден в системе IT Global', true);
+                }
+
+                const adultDoc = snapshot.docs[0];
+                const adultData = adultDoc.data();
+
                 // Создаем пользователя в Auth
                 const userCred = await auth.createUserWithEmailAndPassword(email, password);
                 const uid = userCred.user.uid;
 
-                // Генерируем Global ID для ребёнка (22 символа, как в IT Global)
+                // Генерируем Global ID для ребёнка
                 const childGlobalId = generateGlobalId();
 
-                // Сохраняем в Firestore в папку globalkids
+                // Сохраняем данные ребёнка в globalkids
                 await db.collection('globalkids').doc(childGlobalId).set({
                     uid: uid,
                     globalId: childGlobalId,
@@ -665,14 +422,35 @@
                     gloins: 0,
                     completedTasks: [],
                     adultGlobalId: adultGlobalId,
-                    adultUid: adultVerification.adultUid,
+                    adultUid: adultDoc.id,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     lastLogin: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
+                // Добавляем ребёнка в массив kids у взрослого
+                await db.collection('users').doc(adultDoc.id).update({
+                    kids: firebase.firestore.FieldValue.arrayUnion({
+                        globalId: childGlobalId,
+                        fullName: fullName,
+                        level: level,
+                        addedAt: new Date().toISOString()
+                    })
+                });
+
+                // Если у взрослого еще нет массива kids, создаем его
+                if (!adultData.kids) {
+                    await db.collection('users').doc(adultDoc.id).update({
+                        kids: [{
+                            globalId: childGlobalId,
+                            fullName: fullName,
+                            level: level,
+                            addedAt: new Date().toISOString()
+                        }]
+                    });
+                }
+
                 showMessage('regMessage', `✅ Регистрация успешна! Ваш Global ID: ${childGlobalId}`);
                 
-                // Показываем Global ID и автоматически входим
                 setTimeout(async () => {
                     document.getElementById('loginGlobalId').value = childGlobalId;
                     document.getElementById('loginPassword').value = password;
@@ -702,7 +480,6 @@
             loginBtn.textContent = '⏳ Вход...';
 
             try {
-                // Ищем пользователя по Global ID
                 const userDoc = await db.collection('globalkids').doc(globalId).get();
 
                 if (!userDoc.exists) {
@@ -714,16 +491,23 @@
                 const userData = userDoc.data();
                 const email = userData.email;
 
-                // Входим через Firebase Auth
                 await auth.signInWithEmailAndPassword(email, password);
                 
-                // Обновляем время последнего входа
                 await db.collection('globalkids').doc(globalId).update({
                     lastLogin: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                currentUserData = { ...userData, globalId: globalId };
-                await loadDashboard();
+                // Сохраняем данные в sessionStorage для заданий
+                sessionStorage.setItem('currentChild', JSON.stringify({
+                    globalId: globalId,
+                    fullName: userData.fullName,
+                    level: userData.level,
+                    email: userData.email,
+                    uid: userData.uid
+                }));
+
+                // Перенаправляем на страницу заданий
+                window.location.href = 'tasks.html';
 
                 loginBtn.disabled = false;
                 loginBtn.textContent = '🚀 Войти';
@@ -741,151 +525,6 @@
             }
         };
 
-        async function loadDashboard() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('registerScreen').classList.add('hidden');
-            document.getElementById('dashboardScreen').classList.remove('hidden');
-
-            // Обновляем данные
-            const userDoc = await db.collection('globalkids').doc(currentUserData.globalId).get();
-            currentUserData = { ...userDoc.data(), globalId: currentUserData.globalId };
-            completedTasks = currentUserData.completedTasks || [];
-
-            document.getElementById('dashName').textContent = currentUserData.fullName || currentUserData.globalId;
-            
-            const levelNames = {
-                'kindergarten': 'Детский сад',
-                '1': '1 класс', '2': '2 класс', '3': '3 класс', '4': '4 класс', '5': '5 класс'
-            };
-            document.getElementById('dashLevel').textContent = levelNames[currentUserData.level] || currentUserData.level;
-            document.getElementById('dashGloins').textContent = `🪙 ${currentUserData.gloins || 0} gloins`;
-            document.getElementById('dashGlobalId').textContent = `🔑 Global ID: ${currentUserData.globalId}`;
-
-            await loadTasks();
-            await loadLeaderboard();
-            switchTab('tasks');
-        }
-
-        async function loadTasks() {
-            const level = currentUserData.level;
-            const tasks = tasksByLevel[level] || tasksByLevel['kindergarten'];
-            const tasksList = document.getElementById('tasksList');
-            
-            tasksList.innerHTML = tasks.map(task => {
-                const isCompleted = completedTasks.includes(task.id);
-                return `
-                    <div class="task-card">
-                        <div class="task-header">
-                            <span class="task-title">${task.title}</span>
-                            <span class="task-reward">🪙 +${task.reward}</span>
-                        </div>
-                        <div class="task-desc">${task.desc} | ${task.subject}</div>
-                        <button class="btn ${isCompleted ? 'btn-secondary' : 'btn-success'}" 
-                                onclick="${isCompleted ? '' : `completeTask('${task.id}', ${task.reward})`}"
-                                ${isCompleted ? 'disabled' : ''}>
-                            ${isCompleted ? '✅ Выполнено' : '✔️ Выполнить'}
-                        </button>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        window.completeTask = async (taskId, reward) => {
-            if (completedTasks.includes(taskId)) return;
-
-            completedTasks.push(taskId);
-            const newGloins = (currentUserData.gloins || 0) + reward;
-
-            await db.collection('globalkids').doc(currentUserData.globalId).update({
-                completedTasks: completedTasks,
-                gloins: newGloins
-            });
-
-            currentUserData.gloins = newGloins;
-            currentUserData.completedTasks = completedTasks;
-            document.getElementById('dashGloins').textContent = `🪙 ${newGloins} gloins`;
-            await loadTasks();
-            await loadLeaderboard();
-        };
-
-        async function loadLeaderboard() {
-            const level = currentUserData.level;
-            const snapshot = await db.collection('globalkids')
-                .where('level', '==', level)
-                .orderBy('gloins', 'desc')
-                .limit(20)
-                .get();
-
-            const leaderboardList = document.getElementById('leaderboardList');
-            let html = '';
-            let rank = 1;
-
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `${rank}`;
-                html += `
-                    <div class="leaderboard-item">
-                        <span class="rank">${medal}</span>
-                        <span class="name">${data.fullName || data.globalId}</span>
-                        <span class="score">🪙 ${data.gloins || 0}</span>
-                    </div>
-                `;
-                rank++;
-            });
-
-            if (html === '') {
-                html = '<p style="text-align:center; color:#90a4ae;">Пока никто не заработал gloins</p>';
-            }
-
-            leaderboardList.innerHTML = html;
-        }
-
-        window.switchTab = (tab) => {
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            document.getElementById('tasksContainer').classList.add('hidden');
-            document.getElementById('leaderboardContainer').classList.add('hidden');
-
-            if (tab === 'tasks') {
-                document.querySelector('.nav-tab:first-child').classList.add('active');
-                document.getElementById('tasksContainer').classList.remove('hidden');
-                loadTasks();
-            } else {
-                document.querySelector('.nav-tab:last-child').classList.add('active');
-                document.getElementById('leaderboardContainer').classList.remove('hidden');
-                loadLeaderboard();
-            }
-        };
-
-        window.logout = async () => {
-            if (auth.currentUser) {
-                await auth.signOut();
-            }
-            currentUserData = null;
-            completedTasks = [];
-            document.getElementById('dashboardScreen').classList.add('hidden');
-            document.getElementById('loginScreen').classList.remove('hidden');
-            document.getElementById('loginGlobalId').value = '';
-            document.getElementById('loginPassword').value = '';
-        };
-
-        // Автовход при обновлении страницы
-        auth.onAuthStateChanged(async (user) => {
-            if (user && !currentUserData) {
-                // Найти документ по uid
-                const snapshot = await db.collection('globalkids')
-                    .where('uid', '==', user.uid)
-                    .limit(1)
-                    .get();
-                
-                if (!snapshot.empty) {
-                    const doc = snapshot.docs[0];
-                    currentUserData = { ...doc.data(), globalId: doc.id };
-                    completedTasks = currentUserData.completedTasks || [];
-                    await loadDashboard();
-                }
-            }
-        });
-
         // Обработка Enter
         document.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -893,6 +532,16 @@
                     login();
                 } else if (!document.getElementById('registerScreen').classList.contains('hidden')) {
                     register();
+                }
+            }
+        });
+
+        // Проверяем, есть ли активная сессия
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                const childData = sessionStorage.getItem('currentChild');
+                if (childData) {
+                    window.location.href = 'tasks.html';
                 }
             }
         });
