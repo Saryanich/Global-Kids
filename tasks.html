@@ -10,11 +10,16 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#1a237e">
 
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js">
+    </script>
 
     <style>
         :root {
@@ -30,7 +35,11 @@
             --radius-btn: 14px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -96,8 +105,15 @@
             box-shadow: 0 0 20px rgba(79, 195, 247, 0.3);
         }
 
-        .user-info { flex: 1; margin-left: 0.8rem; }
-        .user-name { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.2rem; }
+        .user-info {
+            flex: 1;
+            margin-left: 0.8rem;
+        }
+        .user-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
         .user-level {
             font-size: 0.75rem;
             color: #4fc3f7;
@@ -118,8 +134,12 @@
         }
 
         @keyframes pulse {
-            0%, 100% { box-shadow: 0 4px 15px rgba(255, 183, 77, 0.3); }
-            50% { box-shadow: 0 4px 25px rgba(255, 183, 77, 0.6); }
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(255, 183, 77, 0.3);
+            }
+            50% {
+                box-shadow: 0 4px 25px rgba(255, 183, 77, 0.6);
+            }
         }
 
         .level-switcher {
@@ -133,8 +153,8 @@
         .level-btn {
             padding: 0.5rem 0.8rem;
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.04);
             color: #90a4ae;
             cursor: pointer;
             font-size: 0.75rem;
@@ -163,8 +183,8 @@
         }
 
         .subject-card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 16px;
             padding: 1rem;
             cursor: pointer;
@@ -173,29 +193,63 @@
             overflow: hidden;
         }
 
-        .subject-card:hover { transform: translateY(-3px); }
-        .subject-card.math { border-left: 4px solid var(--math-color); }
-        .subject-card.russian { border-left: 4px solid var(--russian-color); }
-        .subject-card.literature { border-left: 4px solid var(--literature-color); }
-        .subject-card.world { border-left: 4px solid var(--world-color); }
+        .subject-card:hover {
+            transform: translateY(-3px);
+        }
+        .subject-card.math {
+            border-left: 4px solid var(--math-color);
+        }
+        .subject-card.russian {
+            border-left: 4px solid var(--russian-color);
+        }
+        .subject-card.literature {
+            border-left: 4px solid var(--literature-color);
+        }
+        .subject-card.world {
+            border-left: 4px solid var(--world-color);
+        }
 
-        .subject-icon { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
-        .subject-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.3rem; }
-        .subject-progress { font-size: 0.7rem; color: #90a4ae; margin-bottom: 0.5rem; }
+        .subject-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .subject-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+        .subject-progress {
+            font-size: 0.7rem;
+            color: #90a4ae;
+            margin-bottom: 0.5rem;
+        }
 
         .progress-bar {
             width: 100%;
             height: 4px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 2px;
             overflow: hidden;
         }
 
-        .progress-fill { height: 100%; border-radius: 2px; transition: width 0.5s; }
-        .progress-fill.math { background: var(--math-color); }
-        .progress-fill.russian { background: var(--russian-color); }
-        .progress-fill.literature { background: var(--literature-color); }
-        .progress-fill.world { background: var(--world-color); }
+        .progress-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.5s;
+        }
+        .progress-fill.math {
+            background: var(--math-color);
+        }
+        .progress-fill.russian {
+            background: var(--russian-color);
+        }
+        .progress-fill.literature {
+            background: var(--literature-color);
+        }
+        .progress-fill.world {
+            background: var(--world-color);
+        }
 
         .subject-badge {
             position: absolute;
@@ -219,8 +273,8 @@
         }
 
         .back-btn {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #90a4ae;
             padding: 0.5rem 1rem;
             border-radius: 10px;
@@ -230,9 +284,46 @@
             transition: all 0.3s;
         }
 
+        .card-tabs {
+            display: flex;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .card-tab {
+            padding: 0.5rem 0.8rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.04);
+            color: #90a4ae;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .card-tab.active {
+            background: rgba(129, 199, 132, 0.2);
+            border-color: #81c784;
+            color: #81c784;
+        }
+
+        .completion-message {
+            background: rgba(129, 199, 132, 0.1);
+            border: 1px solid rgba(129, 199, 132, 0.3);
+            border-radius: 12px;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: #81c784;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
         .task-card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 14px;
             padding: 1rem;
             margin-bottom: 0.8rem;
@@ -262,7 +353,12 @@
             margin-bottom: 0.5rem;
         }
 
-        .task-title { font-weight: 600; font-size: 0.95rem; flex: 1; padding-right: 2rem; }
+        .task-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            flex: 1;
+            padding-right: 2rem;
+        }
 
         .task-reward {
             background: linear-gradient(135deg, #ffb74d, #f57c00);
@@ -299,7 +395,7 @@
         }
 
         .btn-disabled {
-            background: rgba(255,255,255,0.06);
+            background: rgba(255, 255, 255, 0.06);
             color: #666;
             cursor: not-allowed;
         }
@@ -320,7 +416,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0, 0, 0, 0.9);
             z-index: 1000;
             display: flex;
             align-items: center;
@@ -335,7 +431,7 @@
             max-width: 500px;
             width: 100%;
             border: 2px solid rgba(79, 195, 247, 0.3);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
         }
 
         .game-question {
@@ -345,12 +441,15 @@
             text-align: center;
         }
 
-        .game-options { display: grid; gap: 0.8rem; }
+        .game-options {
+            display: grid;
+            gap: 0.8rem;
+        }
 
         .game-option {
             padding: 1rem;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s;
@@ -375,15 +474,51 @@
             animation: shake 0.5s;
         }
 
+        .game-input {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .game-input:focus {
+            outline: none;
+            border-color: #4fc3f7;
+        }
+
+        .drawing-canvas {
+            width: 100%;
+            height: 300px;
+            background: white;
+            border-radius: 12px;
+            cursor: crosshair;
+            touch-action: none;
+        }
+
         @keyframes correctPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
         }
 
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-5px);
+            }
+            75% {
+                transform: translateX(5px);
+            }
         }
 
         .game-score {
@@ -394,10 +529,24 @@
             color: #ffb74d;
         }
 
-        .hidden { display: none !important; }
+        .memory-display {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
 
         @media (max-width: 480px) {
-            .subjects-grid { grid-template-columns: 1fr; }
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
             .level-switcher {
                 justify-content: flex-start;
                 overflow-x: auto;
@@ -438,13 +587,15 @@
             <div id="tasksView" class="hidden">
                 <button class="back-btn" onclick="showSubjects()">← Назад к предметам</button>
                 <div class="section-title" id="tasksTitle"></div>
+                <div class="card-tabs" id="cardTabs"></div>
+                <div id="completionMessage" class="completion-message hidden"></div>
                 <div id="tasksList"></div>
             </div>
 
             <div id="gameView" class="hidden">
-                <div class="game-content">
+                <div class="game-content" id="gameContent">
                     <div class="game-question" id="gameQuestion"></div>
-                    <div class="game-options" id="gameOptions"></div>
+                    <div id="gameArea"></div>
                     <div class="game-score hidden" id="gameScore"></div>
                     <button class="btn btn-play" onclick="closeGame()" style="width:100%; margin-top:1rem;">Закрыть игру</button>
                 </div>
@@ -490,14 +641,20 @@
         let currentLevel = null;
         let completedTasks = [];
         let currentSubject = null;
+        let currentCard = 0;
         let currentGame = null;
         let gameScore = 0;
         let gameQuestionIndex = 0;
         let currentGameQuestions = [];
+        let memoryTimeout = null;
 
         const levelNames = {
             'kindergarten': 'Детский сад',
-            '1': '1 класс', '2': '2 класс', '3': '3 класс', '4': '4 класс', '5': '5 класс'
+            '1': '1 класс',
+            '2': '2 класс',
+            '3': '3 класс',
+            '4': '4 класс',
+            '5': '5 класс'
         };
 
         const subjects = [
@@ -506,6 +663,8 @@
             { id: 'literature', name: 'Литература', icon: '📚', color: 'literature' },
             { id: 'world', name: 'Окружающий мир', icon: '🌍', color: 'world' }
         ];
+
+        const cardNames = ['📝 Карточка 1', '🧠 Карточка 2', '🎯 Карточка 3'];
 
         function randomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -520,11 +679,10 @@
             return newArray;
         }
 
-        // ==================== ГЕНЕРАТОРЫ ВОПРОСОВ ПО КЛАССАМ ====================
-        
-        // Детский сад - Счет предметов
+        // ==================== ГЕНЕРАТОРЫ ВОПРОСОВ ====================
+
         function generateCountObjects() {
-            const objects = ['🍎', '🍊', '', '🍇', '🍓', '🍒', '', '', '🍌', '🍐'];
+            const objects = ['🍎', '🍊', '⭐', '🍇', '🍓', '🍒', '🌸', '🦋', '🍌', '🍐'];
             const questions = [];
             for (let i = 0; i < 5; i++) {
                 const count = randomInt(1, 10);
@@ -544,7 +702,6 @@
             return questions;
         }
 
-        // Детский сад - Фигуры
         function generateFindShapes() {
             const shapes = [
                 { name: 'круг', emoji: '⚪', desc: 'круглый' },
@@ -568,7 +725,6 @@
             return questions;
         }
 
-        // Детский сад и 1 класс - Больше-меньше
         function generateCompareNumbers(maxNum = 20) {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -578,13 +734,13 @@
                 if (a > b) correctAnswer = `${a} > ${b}`;
                 else if (a < b) correctAnswer = `${a} < ${b}`;
                 else correctAnswer = `${a} = ${b}`;
-                
+
                 const wrongAnswers = [
                     `${a} < ${b}`,
                     `${a} > ${b}`,
                     `${a} = ${b}`
                 ].filter(ans => ans !== correctAnswer);
-                
+
                 const options = shuffleArray([correctAnswer, ...wrongAnswers.slice(0, 3)]);
                 questions.push({
                     q: `Сравни числа: ${a} и ${b}. Какой знак поставить?`,
@@ -595,7 +751,6 @@
             return questions;
         }
 
-        // 1 класс - Сложение
         function generateAddition(maxNum) {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -617,11 +772,10 @@
             return questions;
         }
 
-        // 1 класс - Вычитание
         function generateSubtraction(maxNum) {
             const questions = [];
             for (let i = 0; i < 5; i++) {
-                const a = randomInt(Math.floor(maxNum/2), maxNum);
+                const a = randomInt(Math.floor(maxNum / 2), maxNum);
                 const b = randomInt(1, a);
                 const correct = a - b;
                 const wrongAnswers = new Set();
@@ -639,7 +793,6 @@
             return questions;
         }
 
-        // 1-2 класс - Числовой ряд
         function generateNumberLine() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -662,7 +815,6 @@
             return questions;
         }
 
-        // 2 класс - Умножение
         function generateMultiplication(maxA, maxB = 10) {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -684,7 +836,6 @@
             return questions;
         }
 
-        // 2-3 класс - Время на часах
         function generateTellTime() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -708,7 +859,6 @@
             return questions;
         }
 
-        // 3 класс - Периметр
         function generatePerimeter() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -730,7 +880,6 @@
             return questions;
         }
 
-        // 3-4 класс - Деление
         function generateDivision() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -752,7 +901,6 @@
             return questions;
         }
 
-        // 4 класс - Площадь
         function generateArea() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -774,7 +922,6 @@
             return questions;
         }
 
-        // 4 класс - Углы
         function generateGeometryAngles() {
             const angles = [
                 { name: 'острый', desc: 'меньше 90°', examples: '30°, 45°, 60°' },
@@ -797,7 +944,6 @@
             return questions;
         }
 
-        // 5 класс - СЛОЖЕНИЕ ДЕСЯТИЧНЫХ ДРОБЕЙ
         function generateDecimalAddition() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -819,7 +965,6 @@
             return questions;
         }
 
-        // 5 класс - ВЫЧИТАНИЕ ДЕСЯТИЧНЫХ ДРОБЕЙ
         function generateDecimalSubtraction() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -841,7 +986,6 @@
             return questions;
         }
 
-        // 5 класс - УМНОЖЕНИЕ ДЕСЯТИЧНЫХ ДРОБЕЙ
         function generateDecimalMultiplication() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -863,7 +1007,6 @@
             return questions;
         }
 
-        // 5 класс - ДЕЛЕНИЕ ДЕСЯТИЧНЫХ ДРОБЕЙ
         function generateDecimalDivision() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -886,7 +1029,6 @@
             return questions;
         }
 
-        // 5 класс - СРАВНЕНИЕ ДЕСЯТИЧНЫХ ДРОБЕЙ
         function generateDecimalCompare() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -896,13 +1038,13 @@
                 if (parseFloat(a) > parseFloat(b)) correctAnswer = `${a} > ${b}`;
                 else if (parseFloat(a) < parseFloat(b)) correctAnswer = `${a} < ${b}`;
                 else correctAnswer = `${a} = ${b}`;
-                
+
                 const wrongAnswers = [
                     `${a} < ${b}`,
                     `${a} > ${b}`,
                     `${a} = ${b}`
                 ].filter(ans => ans !== correctAnswer);
-                
+
                 const options = shuffleArray([correctAnswer, ...wrongAnswers.slice(0, 3)]);
                 questions.push({
                     q: `Сравни десятичные дроби: ${a} и ${b}. Какой знак поставить?`,
@@ -913,7 +1055,6 @@
             return questions;
         }
 
-        // 5 класс - Округление десятичных дробей
         function generateRounding() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -934,7 +1075,6 @@
             return questions;
         }
 
-        // 5 класс - Обыкновенные дроби
         function generateFractions() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -961,7 +1101,6 @@
             return questions;
         }
 
-        // 5 класс - Проценты
         function generatePercentages() {
             const questions = [];
             for (let i = 0; i < 5; i++) {
@@ -983,7 +1122,318 @@
             return questions;
         }
 
-        // Русский язык - Словарные слова
+        // ==================== НОВЫЕ ЗАДАНИЯ НА ЛОГИКУ ====================
+
+        function generateLogicPatterns() {
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const patterns = [
+                    { seq: [2, 4, 6, 8], answer: 10, rule: 'каждое следующее на 2 больше' },
+                    { seq: [5, 10, 15, 20], answer: 25, rule: 'каждое следующее на 5 больше' },
+                    { seq: [1, 4, 9, 16], answer: 25, rule: 'квадраты чисел' },
+                    { seq: [3, 6, 12, 24], answer: 48, rule: 'каждое следующее в 2 раза больше' },
+                    { seq: [10, 8, 6, 4], answer: 2, rule: 'каждое следующее на 2 меньше' },
+                ];
+                const pattern = patterns[randomInt(0, patterns.length - 1)];
+                const wrongAnswers = new Set();
+                while (wrongAnswers.size < 3) {
+                    const wrong = pattern.answer + randomInt(-5, 5);
+                    if (wrong !== pattern.answer && wrong > 0) wrongAnswers.add(wrong);
+                }
+                const options = shuffleArray([pattern.answer, ...wrongAnswers]);
+                questions.push({
+                    q: `Найди закономерность: ${pattern.seq.join(', ')}, ? (${pattern.rule})`,
+                    options: options.map(String),
+                    correct: options.indexOf(pattern.answer)
+                });
+            }
+            return questions;
+        }
+
+        function generateLogicAnalogies() {
+            const analogies = [
+                { pair1: 'Утро', pair2: 'Завтрак', answer: 'Вечер', options: ['Обед', 'Ужин', 'Сон', 'Ночь'], desc: 'Утро → Завтрак, Вечер → ?' },
+                { pair1: 'Зима', pair2: 'Снег', answer: 'Лето', options: ['Дождь', 'Жара', 'Солнце', 'Трава'], desc: 'Зима → Снег, Лето → ?' },
+                { pair1: 'Ручка', pair2: 'Писать', answer: 'Ножницы', options: ['Резать', 'Бумага', 'Клей', 'Линейка'], desc: 'Ручка → Писать, Ножницы → ?' },
+                { pair1: 'Врач', pair2: 'Больница', answer: 'Учитель', options: ['Школа', 'Ученик', 'Книга', 'Урок'], desc: 'Врач → Больница, Учитель → ?' },
+            ];
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const a = analogies[randomInt(0, analogies.length - 1)];
+                const wrongOpts = shuffleArray(a.options.filter(o => o !== a.answer)).slice(0, 3);
+                const options = shuffleArray([a.answer, ...wrongOpts]);
+                questions.push({
+                    q: `Найди аналогию: ${a.desc}`,
+                    options: options,
+                    correct: options.indexOf(a.answer)
+                });
+            }
+            return questions;
+        }
+
+        function generateLogicSudoku() {
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const grid = [
+                    [1, 2, 3, 4],
+                    [3, 4, 1, 2],
+                    [2, 1, 4, 3],
+                    [4, 3, 2, 1]
+                ];
+                const row = randomInt(0, 3);
+                const col = randomInt(0, 3);
+                const correct = grid[row][col];
+                const wrongAnswers = new Set();
+                while (wrongAnswers.size < 3) {
+                    const wrong = randomInt(1, 4);
+                    if (wrong !== correct) wrongAnswers.add(wrong);
+                }
+                const options = shuffleArray([correct, ...wrongAnswers]);
+                const display = grid.map((r, ri) =>
+                    r.map((c, ci) => (ri === row && ci === col) ? '❓' : c).join(' ')
+                ).join('\n');
+                questions.push({
+                    q: `Заполни судоку (числа 1-4 в каждой строке и столбце):\n${display}`,
+                    options: options.map(String),
+                    correct: options.indexOf(correct)
+                });
+            }
+            return questions;
+        }
+
+        // ==================== НОВЫЕ ЗАДАНИЯ НА ПАМЯТЬ ====================
+
+        function generateMemoryKindergarten() {
+            const animals = ['🐰', '🦊', '🐻', '🐸', '🐥'];
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const animal = animals[randomInt(0, animals.length - 1)];
+                const hidingSpots = ['за кустом 🌿', 'под деревом 🌳', 'в норке 🕳️', 'за камнем 🪨', 'в цветах 🌺'];
+                const spot = hidingSpots[randomInt(0, hidingSpots.length - 1)];
+                const wrongSpots = hidingSpots.filter(s => s !== spot).slice(0, 3);
+                const options = shuffleArray([spot, ...wrongSpots]);
+                questions.push({
+                    q: `Запомни! ${animal} спрятался ${spot}\n\nГде спрятался ${animal}?`,
+                    options: options,
+                    correct: options.indexOf(spot)
+                });
+            }
+            return questions;
+        }
+
+        function generateMemoryNumbers1() {
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const number = randomInt(10, 99);
+                const wrongAnswers = new Set();
+                while (wrongAnswers.size < 3) {
+                    const wrong = randomInt(10, 99);
+                    if (wrong !== number) wrongAnswers.add(wrong);
+                }
+                const options = shuffleArray([number, ...wrongAnswers]);
+                questions.push({
+                    q: `Запомни число: ${number}\n\nКакое число ты видел?`,
+                    options: options.map(String),
+                    correct: options.indexOf(number),
+                    memoryNumber: number
+                });
+            }
+            return questions;
+        }
+
+        function generateMemoryNumbersAdvanced() {
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const numCount = randomInt(3, 5);
+                const numbers = [];
+                for (let j = 0; j < numCount; j++) {
+                    numbers.push(randomInt(10, 99));
+                }
+                const correct = numbers.join(', ');
+                const wrongAnswers = new Set();
+                while (wrongAnswers.size < 3) {
+                    const wrongNums = [];
+                    for (let j = 0; j < numCount; j++) {
+                        wrongNums.push(randomInt(10, 99));
+                    }
+                    const wrongStr = wrongNums.join(', ');
+                    if (wrongStr !== correct) wrongAnswers.add(wrongStr);
+                }
+                const options = shuffleArray([correct, ...wrongAnswers]);
+                questions.push({
+                    q: `Смотри внимательно! Числа покажутся на 0.5 секунды...`,
+                    options: options,
+                    correct: options.indexOf(correct),
+                    memoryNumbers: numbers,
+                    displayTime: 500
+                });
+            }
+            return questions;
+        }
+
+        function generateMemoryPositions() {
+            const questions = [];
+            for (let i = 0; i < 5; i++) {
+                const items = ['⭐', '🔴', '🔵', '🟢', '🟡'];
+                const positions = shuffleArray([0, 1, 2, 3, 4]);
+                const correctItem = items[randomInt(0, items.length - 1)];
+                const correctPos = positions[items.indexOf(correctItem)];
+                const wrongPositions = new Set();
+                while (wrongPositions.size < 3) {
+                    const wrong = randomInt(0, 4);
+                    if (wrong !== correctPos) wrongPositions.add(wrong);
+                }
+                const options = shuffleArray([correctPos + 1, ...Array.from(wrongPositions).map(p => p + 1)]);
+                questions.push({
+                    q: `Запомни позиции:\n${items.map((item, idx) => `${item} → место ${positions[idx] + 1}`).join('\n')}\n\nНа каком месте был ${correctItem}?`,
+                    options: options.map(String),
+                    correct: options.indexOf(correctPos + 1)
+                });
+            }
+            return questions;
+        }
+
+        // ==================== ЗАДАНИЕ НА ОБВЕДЕНИЕ ФИГУР (САД) ====================
+
+        function startDrawShape() {
+            document.getElementById('gameView').classList.remove('hidden');
+            const gameQuestion = document.getElementById('gameQuestion');
+            const gameArea = document.getElementById('gameArea');
+            const gameScore = document.getElementById('gameScore');
+
+            gameQuestion.textContent = '🎨 Обведи фигуру! Нарисуй по контуру';
+            gameScore.classList.add('hidden');
+
+            const shapes = [
+                { name: 'круг', draw: drawCircle },
+                { name: 'квадрат', draw: drawSquare },
+                { name: 'треугольник', draw: drawTriangle },
+                { name: 'звезда', draw: drawStar },
+                { name: 'домик', draw: drawHouse },
+            ];
+
+            const shape = shapes[randomInt(0, shapes.length - 1)];
+            gameArea.innerHTML = `
+                <canvas id="drawCanvas" class="drawing-canvas"></canvas>
+                <div style="text-align:center; margin-top:0.5rem; color:#90a4ae;">Обведи ${shape.name} пальцем</div>
+                <button class="btn btn-play" onclick="checkDrawing()" style="width:100%; margin-top:0.5rem;">✅ Готово</button>
+            `;
+
+            const canvas = document.getElementById('drawCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 300;
+
+            ctx.fillStyle = '#f0f0f0';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = '#cccccc';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            shape.draw(ctx, canvas.width / 2, canvas.height / 2, 80);
+
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+
+            canvas.addEventListener('mousedown', (e) => {
+                isDrawing = true;
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            });
+            canvas.addEventListener('mousemove', (e) => {
+                if (!isDrawing) return;
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.strokeStyle = '#4fc3f7';
+                ctx.lineWidth = 4;
+                ctx.setLineDash([]);
+                ctx.stroke();
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            });
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mouseleave', () => isDrawing = false);
+
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                isDrawing = true;
+                lastX = touch.clientX - rect.left;
+                lastY = touch.clientY - rect.top;
+            });
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                if (!isDrawing) return;
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                const x = touch.clientX - rect.left;
+                const y = touch.clientY - rect.top;
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.strokeStyle = '#4fc3f7';
+                ctx.lineWidth = 4;
+                ctx.setLineDash([]);
+                ctx.stroke();
+                lastX = x;
+                lastY = y;
+            });
+            canvas.addEventListener('touchend', () => isDrawing = false);
+        }
+
+        function drawCircle(ctx, cx, cy, r) {
+            ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+
+        function drawSquare(ctx, cx, cy, size) {
+            ctx.strokeRect(cx - size, cy - size, size * 2, size * 2);
+        }
+
+        function drawTriangle(ctx, cx, cy, size) {
+            ctx.beginPath();
+            ctx.moveTo(cx, cy - size);
+            ctx.lineTo(cx - size, cy + size);
+            ctx.lineTo(cx + size, cy + size);
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        function drawStar(ctx, cx, cy, size) {
+            ctx.beginPath();
+            for (let i = 0; i < 5; i++) {
+                const angle = (i * 4 * Math.PI) / 5 - Math.PI / 2;
+                const x = cx + size * Math.cos(angle);
+                const y = cy + size * Math.sin(angle);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        function drawHouse(ctx, cx, cy, size) {
+            ctx.strokeRect(cx - size, cy, size * 2, size * 1.5);
+            ctx.beginPath();
+            ctx.moveTo(cx - size - 10, cy);
+            ctx.lineTo(cx, cy - size);
+            ctx.lineTo(cx + size + 10, cy);
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        window.checkDrawing = () => {
+            confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 } });
+            if (currentGame) {
+                completeTask(currentGame.taskId, currentGame.reward);
+            }
+            closeGame();
+        };
+
+        // ==================== ГЕНЕРАТОРЫ ДЛЯ ДРУГИХ ПРЕДМЕТОВ ====================
+
         function generateVocabulary() {
             const words = [
                 { word: 'м...локо', answer: 'о' },
@@ -1010,7 +1460,6 @@
             });
         }
 
-        // Русский язык - Части речи
         function generatePartsOfSpeech() {
             const words = [
                 { word: 'стол', type: 'существительное' },
@@ -1032,19 +1481,18 @@
             });
         }
 
-        // Литература - Сказки
         function generateFairyTale() {
             const allQuestions = [
                 { q: 'Кто съел Колобка?', options: ['Заяц', 'Волк', 'Медведь', 'Лиса'], correct: 3 },
                 { q: 'Кто тянул Репку последним?', options: ['Кошка', 'Мышка', 'Жучка', 'Внучка'], correct: 1 },
                 { q: 'Кто разбил золотое яичко?', options: ['Дед', 'Баба', 'Мышка', 'Курочка'], correct: 2 },
                 { q: 'Что несла Красная Шапочка?', options: ['Пирожки', 'Конфеты', 'Фрукты', 'Овощи'], correct: 0 },
-                { q: 'Кто украл солнце в сказке Чуковского?', options: ['Змея', 'Дракон', 'Крокодил', 'Ящерица'], correct: 2 },
+                { q: 'Кто украл солнце в сказке Чуковского?', options: ['Змея', 'Дракон', 'Крокодил', 'Ящерица'],
+                correct: 2 },
             ];
             return shuffleArray(allQuestions).slice(0, 5);
         }
 
-        // Литература - Пословицы
         function generateProverbs() {
             const proverbs = [
                 { start: 'Без труда...', end: 'не выловишь и рыбку из пруда' },
@@ -1066,7 +1514,6 @@
             });
         }
 
-        // Окружающий мир - Времена года
         function generateSeasons() {
             const allQuestions = [
                 { q: 'Когда опадают листья?', options: ['Весной', 'Летом', 'Осенью', 'Зимой'], correct: 2 },
@@ -1078,7 +1525,6 @@
             return shuffleArray(allQuestions).slice(0, 5);
         }
 
-        // Окружающий мир - Животные
         function generateAnimals() {
             const animals = [
                 { animal: 'Медведь', home: 'Берлога' },
@@ -1100,7 +1546,6 @@
             });
         }
 
-        // Окружающий мир - Стороны горизонта
         function generateCompass() {
             const questions = [
                 { q: 'Солнце встает на...', options: ['Севере', 'Юге', 'Востоке', 'Западе'], correct: 2 },
@@ -1112,13 +1557,13 @@
             return shuffleArray(questions).slice(0, 5);
         }
 
-        // Окружающий мир - Планеты
         function generatePlanets() {
             const questions = [
                 { q: 'Какая планета ближе всех к Солнцу?', options: ['Венера', 'Меркурий', 'Земля', 'Марс'], correct: 1 },
                 { q: 'Какая планета самая большая?', options: ['Сатурн', 'Юпитер', 'Уран', 'Нептун'], correct: 1 },
                 { q: 'Какая планета имеет кольца?', options: ['Марс', 'Венера', 'Сатурн', 'Меркурий'], correct: 2 },
-                { q: 'Как называется наша галактика?', options: ['Андромеда', 'Млечный Путь', 'Туманность', 'Вселенная'], correct: 1 },
+                { q: 'Как называется наша галактика?', options: ['Андромеда', 'Млечный Путь', 'Туманность', 'Вселенная'],
+                    correct: 1 },
                 { q: 'Сколько планет в Солнечной системе?', options: ['7', '8', '9', '10'], correct: 1 },
             ];
             return shuffleArray(questions).slice(0, 5);
@@ -1126,33 +1571,23 @@
 
         // Карта генераторов
         const questionGenerators = {
-            // Детский сад
+            // Базовые
             count_objects: generateCountObjects,
             find_shapes: generateFindShapes,
             compare_numbers: () => generateCompareNumbers(10),
-            
-            // 1 класс
             addition_10: () => generateAddition(10),
             subtraction_10: () => generateSubtraction(10),
             number_line: generateNumberLine,
-            
-            // 2 класс
             multiplication_2_3: () => generateMultiplication(3),
             multiplication_table: () => generateMultiplication(10),
             measure_length: () => generateAddition(50),
             tell_time: generateTellTime,
-            
-            // 3 класс
             perimeter: generatePerimeter,
             division_100: generateDivision,
             area: generateArea,
-            
-            // 4 класс
             big_numbers: () => generateAddition(1000),
             unit_conversion: () => generateMultiplication(10),
             geometry_angles: generateGeometryAngles,
-            
-            // 5 класс - НОВЫЕ ГЕНЕРАТОРЫ
             decimal_addition: generateDecimalAddition,
             decimal_subtraction: generateDecimalSubtraction,
             decimal_multiplication: generateDecimalMultiplication,
@@ -1161,196 +1596,349 @@
             rounding: generateRounding,
             fractions: generateFractions,
             percentages: generatePercentages,
-            
-            // Русский язык
+
+            // Логика
+            logic_patterns: generateLogicPatterns,
+            logic_analogies: generateLogicAnalogies,
+            logic_sudoku: generateLogicSudoku,
+            logic_shapes: generateFindShapes,
+
+            // Память
+            memory_kindergarten: generateMemoryKindergarten,
+            memory_numbers: generateMemoryNumbers1,
+            memory_advanced: generateMemoryNumbersAdvanced,
+            memory_positions: generateMemoryPositions,
+
+            // Русский
             find_letter: generateVocabulary,
-            syllables: generateVocabulary,
             vocabulary: generateVocabulary,
-            stress: generateVocabulary,
+            parts_of_speech: generatePartsOfSpeech,
             nouns: generatePartsOfSpeech,
-            prepositions: generateVocabulary,
-            root_words: generateVocabulary,
-            cases: generatePartsOfSpeech,
             verbs: generatePartsOfSpeech,
             adjectives: generatePartsOfSpeech,
-            declension: generatePartsOfSpeech,
-            conjugation: generatePartsOfSpeech,
-            punctuation: generateVocabulary,
-            syntax: generatePartsOfSpeech,
-            spelling: generateVocabulary,
-            morphology: generatePartsOfSpeech,
-            
+
             // Литература
             fairy_tale: generateFairyTale,
-            guess_hero: generateFairyTale,
-            poem: generateFairyTale,
-            read_story: generateFairyTale,
-            fables: generateFairyTale,
             proverbs: generateProverbs,
-            retelling: generateFairyTale,
-            authors: generateFairyTale,
-            genres: generateFairyTale,
-            text_plan: generateFairyTale,
-            character: generateFairyTale,
-            compare_heroes: generateFairyTale,
-            text_analysis: generateFairyTale,
-            epithets: generateFairyTale,
-            biography: generateFairyTale,
-            essay: generateFairyTale,
-            drama: generateFairyTale,
-            lyric: generateFairyTale,
-            
+            guess_hero: generateFairyTale,
+
             // Окружающий мир
             seasons: generateSeasons,
             animal_homes: generateAnimals,
-            plant_parts: generateSeasons,
-            nature: generateSeasons,
-            birds: generateAnimals,
-            weather: generateSeasons,
             compass: generateCompass,
-            water_bodies: generateSeasons,
-            landforms: generateSeasons,
-            natural_zones: generateSeasons,
-            food_chain: generateAnimals,
-            russia_map: generateSeasons,
-            ancient_rus: generateSeasons,
-            ecosystems: generateSeasons,
-            minerals: generateSeasons,
-            history_dates: generateSeasons,
-            scientists: generateSeasons,
-            world_capitals: generatePlanets,
+            planets: generatePlanets,
         };
 
-        // База заданий с правильными типами игр для каждого класса
+        // База заданий (3 карточки на каждый предмет/уровень)
         const tasksDatabase = {
             math: {
                 kindergarten: [
-                    { id: 'm_k1', title: '🍎 Весёлый счёт', desc: 'Посчитай предметы', reward: 5, game: 'count_objects' },
-                    { id: 'm_k2', title: '🔺 Фигуры', desc: 'Угадай геометрическую фигуру', reward: 5, game: 'find_shapes' },
-                    { id: 'm_k3', title: '🎲 Больше-меньше', desc: 'Сравни числа', reward: 5, game: 'compare_numbers' },
+                    { id: 'm_k1', title: '🍎 Весёлый счёт', desc: 'Посчитай предметы', reward: 5, game: 'count_objects',
+                        card: 0 },
+                    { id: 'm_k2', title: '🔺 Фигуры', desc: 'Угадай геометрическую фигуру', reward: 5, game: 'find_shapes',
+                        card: 0 },
+                    { id: 'm_k3', title: '🧩 Логика', desc: 'Найди закономерность', reward: 8, game: 'logic_patterns',
+                    card: 1 },
+                    { id: 'm_k4', title: '🧠 Память', desc: 'Запомни, кто где спрятался', reward: 8, game: 'memory_kindergarten',
+                        card: 1 },
+                    { id: 'm_k5', title: '✏️ Обведи фигуру', desc: 'Нарисуй по контуру', reward: 10, game: 'draw_shape',
+                        card: 2 },
+                    { id: 'm_k6', title: '🎲 Сравни числа', desc: 'Больше, меньше или равно', reward: 10, game: 'compare_numbers',
+                        card: 2 },
                 ],
                 1: [
-                    { id: 'm1_1', title: '➕ Сложение до 10', desc: 'Реши примеры на сложение', reward: 8, game: 'addition_10' },
-                    { id: 'm1_2', title: '➖ Вычитание до 10', desc: 'Реши примеры на вычитание', reward: 8, game: 'subtraction_10' },
-                    { id: 'm1_3', title: '🔢 Числовой ряд', desc: 'Продолжи последовательность', reward: 10, game: 'number_line' },
+                    { id: 'm1_1', title: '➕ Сложение до 10', desc: 'Реши примеры на сложение', reward: 8,
+                        game: 'addition_10', card: 0 },
+                    { id: 'm1_2', title: '➖ Вычитание до 10', desc: 'Реши примеры на вычитание', reward: 8,
+                        game: 'subtraction_10', card: 0 },
+                    { id: 'm1_3', title: '🧩 Логические цепочки', desc: 'Продолжи последовательность', reward: 10,
+                        game: 'logic_patterns', card: 1 },
+                    { id: 'm1_4', title: '🧠 Запомни числа', desc: 'Посмотри и запомни число', reward: 10,
+                        game: 'memory_numbers', card: 1 },
+                    { id: 'm1_5', title: '🔢 Числовой ряд', desc: 'Продолжи последовательность', reward: 12,
+                        game: 'number_line', card: 2 },
+                    { id: 'm1_6', title: '🧩 Аналогии', desc: 'Найди логическую связь', reward: 12, game: 'logic_analogies',
+                        card: 2 },
                 ],
                 2: [
-                    { id: 'm2_1', title: '✖️ Таблица на 2,3', desc: 'Умножение на 2 и 3', reward: 12, game: 'multiplication_2_3' },
-                    { id: 'm2_2', title: '📏 Измерения', desc: 'Сложение до 50', reward: 10, game: 'measure_length' },
-                    { id: 'm2_3', title: '⏰ Время', desc: 'Определи время на часах', reward: 10, game: 'tell_time' },
+                    { id: 'm2_1', title: '✖️ Таблица на 2,3', desc: 'Умножение на 2 и 3', reward: 12,
+                        game: 'multiplication_2_3', card: 0 },
+                    { id: 'm2_2', title: '📏 Измерения', desc: 'Сложение до 50', reward: 10, game: 'measure_length',
+                    card: 0 },
+                    { id: 'm2_3', title: '🧩 Судоку', desc: 'Заполни числовой квадрат', reward: 15, game: 'logic_sudoku',
+                        card: 1 },
+                    { id: 'm2_4', title: '🧠 Запомни позиции', desc: 'Где какой предмет был?', reward: 15,
+                        game: 'memory_positions', card: 1 },
+                    { id: 'm2_5', title: '⏰ Время', desc: 'Определи время на часах', reward: 12, game: 'tell_time',
+                    card: 2 },
+                    { id: 'm2_6', title: '🧩 Закономерности', desc: 'Найди правило и продолжи', reward: 15,
+                        game: 'logic_patterns', card: 2 },
                 ],
                 3: [
-                    { id: 'm3_1', title: '✖️ Таблица умножения', desc: 'Реши примеры на умножение', reward: 15, game: 'multiplication_table' },
-                    { id: 'm3_2', title: '📐 Периметр', desc: 'Найди периметр фигур', reward: 12, game: 'perimeter' },
-                    { id: 'm3_3', title: '➗ Деление', desc: 'Примеры на деление', reward: 15, game: 'division_100' },
+                    { id: 'm3_1', title: '✖️ Таблица умножения', desc: 'Реши примеры на умножение', reward: 15,
+                        game: 'multiplication_table', card: 0 },
+                    { id: 'm3_2', title: '📐 Периметр', desc: 'Найди периметр фигур', reward: 12, game: 'perimeter',
+                    card: 0 },
+                    { id: 'm3_3', title: '🧩 Логические задачи', desc: 'Реши задачи на смекалку', reward: 18,
+                        game: 'logic_analogies', card: 1 },
+                    { id: 'm3_4', title: '🧠 Числовая память', desc: 'Запомни последовательность чисел', reward: 18,
+                        game: 'memory_advanced', card: 1 },
+                    { id: 'm3_5', title: '➗ Деление', desc: 'Примеры на деление', reward: 15, game: 'division_100',
+                    card: 2 },
+                    { id: 'm3_6', title: '📐 Площадь', desc: 'Вычисли площадь', reward: 18, game: 'area', card: 2 },
                 ],
                 4: [
-                    { id: 'm4_1', title: '📊 Площадь фигур', desc: 'Вычисли площадь', reward: 15, game: 'area' },
-                    { id: 'm4_2', title: '🔢 Многозначные числа', desc: 'Сложение больших чисел', reward: 12, game: 'big_numbers' },
-                    { id: 'm4_3', title: '📐 Виды углов', desc: 'Определи вид угла', reward: 15, game: 'geometry_angles' },
+                    { id: 'm4_1', title: '📊 Площадь фигур', desc: 'Вычисли площадь', reward: 15, game: 'area', card: 0 },
+                    { id: 'm4_2', title: '🔢 Многозначные числа', desc: 'Сложение больших чисел', reward: 12,
+                        game: 'big_numbers', card: 0 },
+                    { id: 'm4_3', title: '🧩 Сложные аналогии', desc: 'Найди логическую связь', reward: 18,
+                        game: 'logic_analogies', card: 1 },
+                    { id: 'm4_4', title: '🧠 Мгновенная память', desc: 'Числа на 0.5 секунды', reward: 20,
+                        game: 'memory_advanced', card: 1 },
+                    { id: 'm4_5', title: '📐 Виды углов', desc: 'Определи вид угла', reward: 15, game: 'geometry_angles',
+                        card: 2 },
+                    { id: 'm4_6', title: '🧩 Судоку 4x4', desc: 'Заполни логический квадрат', reward: 18,
+                        game: 'logic_sudoku', card: 2 },
                 ],
                 5: [
-                    { id: 'm5_1', title: '🔢 Десятичные дроби', desc: 'Сложение десятичных дробей', reward: 18, game: 'decimal_addition' },
-                    { id: 'm5_2', title: '📊 Проценты', desc: 'Найди процент от числа', reward: 15, game: 'percentages' },
-                    { id: 'm5_3', title: '➗ Деление десятичных дробей', desc: 'Раздели десятичную дробь', reward: 18, game: 'decimal_division' },
-                    { id: 'm5_4', title: '🔣 Обыкновенные дроби', desc: 'Сложение дробей', reward: 18, game: 'fractions' },
-                    { id: 'm5_5', title: '📐 Округление', desc: 'Округли до целых', reward: 15, game: 'rounding' },
+                    { id: 'm5_1', title: '🔢 Десятичные дроби', desc: 'Сложение десятичных дробей', reward: 18,
+                        game: 'decimal_addition', card: 0 },
+                    { id: 'm5_2', title: '📊 Проценты', desc: 'Найди процент от числа', reward: 15, game: 'percentages',
+                        card: 0 },
+                    { id: 'm5_3', title: '🧩 Продвинутая логика', desc: 'Сложные логические задачи', reward: 22,
+                        game: 'logic_analogies', card: 1 },
+                    { id: 'm5_4', title: '🧠 Супер-память', desc: 'Запомни и введи числа', reward: 25,
+                        game: 'memory_advanced', card: 1 },
+                    { id: 'm5_5', title: '➗ Деление дробей', desc: 'Раздели десятичную дробь', reward: 18,
+                        game: 'decimal_division', card: 2 },
+                    { id: 'm5_6', title: '🔣 Обыкновенные дроби', desc: 'Сложение дробей', reward: 20, game: 'fractions',
+                        card: 2 },
                 ]
             },
             russian: {
                 kindergarten: [
-                    { id: 'r_k1', title: '🔤 Буквы', desc: 'Какая буква пропущена?', reward: 5, game: 'find_letter' },
-                    { id: 'r_k2', title: '📝 Слоги', desc: 'Составь слово из слогов', reward: 5, game: 'syllables' },
-                    { id: 'r_k3', title: '🎨 Слова', desc: 'Вставь правильную букву', reward: 5, game: 'vocabulary' },
+                    { id: 'r_k1', title: '🔤 Буквы', desc: 'Какая буква пропущена?', reward: 5, game: 'find_letter',
+                    card: 0 },
+                    { id: 'r_k2', title: '📝 Слоги', desc: 'Составь слово из слогов', reward: 5, game: 'vocabulary',
+                    card: 0 },
+                    { id: 'r_k3', title: '🧠 Запомни слова', desc: 'Какие слова ты видел?', reward: 8,
+                        game: 'memory_kindergarten', card: 1 },
+                    { id: 'r_k4', title: '🧩 Найди лишнее', desc: 'Какое слово лишнее?', reward: 8, game: 'logic_analogies',
+                        card: 1 },
+                    { id: 'r_k5', title: '🎨 Слова', desc: 'Вставь правильную букву', reward: 10, game: 'vocabulary',
+                        card: 2 },
+                    { id: 'r_k6', title: '📖 Рассказ по картинке', desc: 'Ответь на вопросы', reward: 10,
+                        game: 'fairy_tale', card: 2 },
                 ],
                 1: [
-                    { id: 'r1_1', title: '✏️ Словарные слова', desc: 'Вставь пропущенные буквы', reward: 8, game: 'vocabulary' },
-                    { id: 'r1_2', title: '📖 Ударение', desc: 'Поставь ударение', reward: 8, game: 'stress' },
-                    { id: 'r1_3', title: '📝 Части речи', desc: 'Определи часть речи', reward: 10, game: 'nouns' },
+                    { id: 'r1_1', title: '✏️ Словарные слова', desc: 'Вставь пропущенные буквы', reward: 8,
+                        game: 'vocabulary', card: 0 },
+                    { id: 'r1_2', title: '📖 Ударение', desc: 'Поставь ударение', reward: 8, game: 'vocabulary', card: 0 },
+                    { id: 'r1_3', title: '🧠 Запомни слова', desc: 'Тренировка памяти на словах', reward: 10,
+                        game: 'memory_positions', card: 1 },
+                    { id: 'r1_4', title: '🧩 Грамматическая логика', desc: 'Найди закономерность', reward: 10,
+                        game: 'logic_analogies', card: 1 },
+                    { id: 'r1_5', title: '📝 Части речи', desc: 'Определи часть речи', reward: 12, game: 'parts_of_speech',
+                        card: 2 },
+                    { id: 'r1_6', title: '📚 Пословицы', desc: 'Закончи пословицу', reward: 12, game: 'proverbs',
+                    card: 2 },
                 ],
                 2: [
-                    { id: 'r2_1', title: '📝 Части речи', desc: 'Найди существительные', reward: 12, game: 'nouns' },
-                    { id: 'r2_2', title: '✍️ Предлоги', desc: 'Вставь правильный предлог', reward: 10, game: 'prepositions' },
-                    { id: 'r2_3', title: '🔤 Корень слова', desc: 'Найди однокоренные слова', reward: 12, game: 'root_words' },
+                    { id: 'r2_1', title: '📝 Части речи', desc: 'Найди существительные', reward: 12, game: 'nouns',
+                    card: 0 },
+                    { id: 'r2_2', title: '✍️ Предлоги', desc: 'Вставь правильный предлог', reward: 10,
+                    game: 'vocabulary', card: 0 },
+                    { id: 'r2_3', title: '🧠 Орфографическая память', desc: 'Запомни написание слов', reward: 15,
+                        game: 'memory_numbers', card: 1 },
+                    { id: 'r2_4', title: '🧩 Словесные цепочки', desc: 'Продолжи логическую цепочку', reward: 15,
+                        game: 'logic_patterns', card: 1 },
+                    { id: 'r2_5', title: '🔤 Корень слова', desc: 'Найди однокоренные слова', reward: 14,
+                    game: 'vocabulary', card: 2 },
+                    { id: 'r2_6', title: '📖 Сказки', desc: 'Ответь на вопросы', reward: 14, game: 'fairy_tale', card: 2 },
                 ],
                 3: [
-                    { id: 'r3_1', title: '📖 Падежи', desc: 'Определи падеж', reward: 15, game: 'cases' },
-                    { id: 'r3_2', title: '✍️ Глаголы', desc: 'Определи время глагола', reward: 12, game: 'verbs' },
-                    { id: 'r3_3', title: '📝 Прилагательные', desc: 'Подбери прилагательные', reward: 15, game: 'adjectives' },
+                    { id: 'r3_1', title: '📖 Падежи', desc: 'Определи падеж', reward: 15, game: 'nouns', card: 0 },
+                    { id: 'r3_2', title: '✍️ Глаголы', desc: 'Определи время глагола', reward: 12, game: 'verbs', card: 0 },
+                    { id: 'r3_3', title: '🧠 Сложная память', desc: 'Запомни и воспроизведи', reward: 18,
+                        game: 'memory_advanced', card: 1 },
+                    { id: 'r3_4', title: '🧩 Грамматическая логика', desc: 'Реши лингвистические задачи', reward: 18,
+                        game: 'logic_analogies', card: 1 },
+                    { id: 'r3_5', title: '📝 Прилагательные', desc: 'Подбери прилагательные', reward: 18,
+                        game: 'adjectives', card: 2 },
+                    { id: 'r3_6', title: '📚 Литература', desc: 'Угадай произведение', reward: 18, game: 'fairy_tale',
+                        card: 2 },
                 ],
                 4: [
-                    { id: 'r4_1', title: '📖 Склонение', desc: 'Просклоняй существительные', reward: 15, game: 'declension' },
-                    { id: 'r4_2', title: '✍️ Спряжение', desc: 'Определи спряжение', reward: 12, game: 'conjugation' },
-                    { id: 'r4_3', title: '📝 Пунктуация', desc: 'Расставь знаки', reward: 15, game: 'punctuation' },
+                    { id: 'r4_1', title: '📖 Склонение', desc: 'Просклоняй существительные', reward: 15, game: 'nouns',
+                        card: 0 },
+                    { id: 'r4_2', title: '✍️ Спряжение', desc: 'Определи спряжение', reward: 12, game: 'verbs', card: 0 },
+                    { id: 'r4_3', title: '🧠 Супер-память на слова', desc: 'Запомни сложные слова', reward: 20,
+                        game: 'memory_advanced', card: 1 },
+                    { id: 'r4_4', title: '🧩 Филологические задачи', desc: 'Реши лингвистические головоломки', reward: 20,
+                        game: 'logic_analogies', card: 1 },
+                    { id: 'r4_5', title: '📝 Пунктуация', desc: 'Расставь знаки', reward: 18, game: 'vocabulary',
+                    card: 2 },
+                    { id: 'r4_6', title: '📖 Анализ текста', desc: 'Найди главную мысль', reward: 20, game: 'fairy_tale',
+                        card: 2 },
                 ],
                 5: [
-                    { id: 'r5_1', title: '📖 Синтаксис', desc: 'Разбери предложение', reward: 18, game: 'syntax' },
-                    { id: 'r5_2', title: '✍️ Орфография', desc: 'Исправь ошибки', reward: 15, game: 'spelling' },
-                    { id: 'r5_3', title: '📝 Морфология', desc: 'Определи часть речи', reward: 18, game: 'morphology' },
+                    { id: 'r5_1', title: '📖 Синтаксис', desc: 'Разбери предложение', reward: 18, game: 'nouns', card: 0 },
+                    { id: 'r5_2', title: '✍️ Орфография', desc: 'Исправь ошибки', reward: 15, game: 'vocabulary',
+                    card: 0 },
+                    { id: 'r5_3', title: '🧠 Мнемотехника', desc: 'Продвинутые техники запоминания', reward: 25,
+                        game: 'memory_advanced', card: 1 },
+                    { id: 'r5_4', title: '🧩 Лингвистические парадоксы', desc: 'Сложные языковые задачи', reward: 25,
+                        game: 'logic_analogies', card: 1 },
+                    { id: 'r5_5', title: '📝 Морфология', desc: 'Определи часть речи', reward: 20, game: 'adjectives',
+                        card: 2 },
+                    { id: 'r5_6', title: '📚 Эссе', desc: 'Напиши мини-сочинение', reward: 25, game: 'fairy_tale',
+                    card: 2 },
                 ]
             },
             literature: {
                 kindergarten: [
-                    { id: 'l_k1', title: '📖 Сказка', desc: 'Ответь на вопросы по сказке', reward: 5, game: 'fairy_tale' },
-                    { id: 'l_k2', title: '🎭 Герои', desc: 'Угадай сказочного героя', reward: 5, game: 'guess_hero' },
-                    { id: 'l_k3', title: '📚 Стишок', desc: 'Продолжи стихотворение', reward: 5, game: 'poem' },
+                    { id: 'l_k1', title: '📖 Сказка', desc: 'Ответь на вопросы по сказке', reward: 5, game: 'fairy_tale',
+                        card: 0 },
+                    { id: 'l_k2', title: '🎭 Герои', desc: 'Угадай сказочного героя', reward: 5, game: 'guess_hero',
+                    card: 0 },
+                    { id: 'l_k3', title: '🧠 Запомни героев', desc: 'Кто был в сказке?', reward: 8,
+                        game: 'memory_kindergarten', card: 1 },
+                    { id: 'l_k4', title: '🧩 Сказочная логика', desc: 'Что было дальше?', reward: 8, game: 'logic_analogies',
+                        card: 1 },
+                    { id: 'l_k5', title: '📚 Стишок', desc: 'Продолжи стихотворение', reward: 10, game: 'fairy_tale',
+                    card: 2 },
+                    { id: 'l_k6', title: '🎨 Расскажи сказку', desc: 'Перескажи сюжет', reward: 10, game: 'fairy_tale',
+                        card: 2 },
                 ],
                 1: [
-                    { id: 'l1_1', title: '📖 Рассказ', desc: 'Ответь на вопросы', reward: 8, game: 'read_story' },
-                    { id: 'l1_2', title: '🎭 Басни', desc: 'Угадай басню', reward: 8, game: 'fables' },
-                    { id: 'l1_3', title: '📚 Пословицы', desc: 'Закончи пословицу', reward: 10, game: 'proverbs' },
+                    { id: 'l1_1', title: '📖 Рассказ', desc: 'Ответь на вопросы', reward: 8, game: 'fairy_tale', card: 0 },
+                    { id: 'l1_2', title: '🎭 Басни', desc: 'Угадай басню', reward: 8, game: 'fairy_tale', card: 0 },
+                    { id: 'l1_3', title: '🧠 Литературная память', desc: 'Запомни детали текста', reward: 10,
+                        game: 'memory_positions', card: 1 },
+                    { id: 'l1_4', title: '🧩 Сюжетная логика', desc: 'Восстанови последовательность', reward: 10,
+                        game: 'logic_patterns', card: 1 },
+                    { id: 'l1_5', title: '📚 Пословицы', desc: 'Закончи пословицу', reward: 12, game: 'proverbs',
+                    card: 2 },
+                    { id: 'l1_6', title: '🎨 Стихи', desc: 'Продолжи стихотворение', reward: 12, game: 'fairy_tale',
+                    card: 2 },
                 ],
                 2: [
-                    { id: 'l2_1', title: '📖 Пересказ', desc: 'Ответь на вопросы', reward: 12, game: 'retelling' },
-                    { id: 'l2_2', title: '🎭 Авторы', desc: 'Угадай автора', reward: 10, game: 'authors' },
-                    { id: 'l2_3', title: '📚 Жанры', desc: 'Определи жанр', reward: 12, game: 'genres' },
+                    { id: 'l2_1', title: '📖 Пересказ', desc: 'Ответь на вопросы', reward: 12, game: 'fairy_tale',
+                    card: 0 },
+                    { id: 'l2_2', title: '🎭 Авторы', desc: 'Угадай автора', reward: 10, game: 'fairy_tale', card: 0 },
+                    { id: 'l2_3', title: '🧠 Запомни текст', desc: 'Восстанови отрывок', reward: 15, game: 'memory_advanced',
+                        card: 1 },
+                    { id: 'l2_4', title: '🧩 Композиция', desc: 'Выстрой сюжет по порядку', reward: 15,
+                        game: 'logic_patterns', card: 1 },
+                    { id: 'l2_5', title: '📚 Жанры', desc: 'Определи жанр', reward: 14, game: 'fairy_tale', card: 2 },
+                    { id: 'l2_6', title: '🎨 Выразительное чтение', desc: 'Прочитай с выражением', reward: 14,
+                        game: 'fairy_tale', card: 2 },
                 ],
                 3: [
-                    { id: 'l3_1', title: '📖 План текста', desc: 'Составь план', reward: 15, game: 'text_plan' },
-                    { id: 'l3_2', title: '🎭 Характеристика', desc: 'Опиши героя', reward: 12, game: 'character' },
-                    { id: 'l3_3', title: '📚 Сравнение', desc: 'Сравни героев', reward: 15, game: 'compare_heroes' },
+                    { id: 'l3_1', title: '📖 План текста', desc: 'Составь план', reward: 15, game: 'fairy_tale', card: 0 },
+                    { id: 'l3_2', title: '🎭 Характеристика', desc: 'Опиши героя', reward: 12, game: 'fairy_tale', card: 0 },
+                    { id: 'l3_3', title: '🧠 Детальная память', desc: 'Запомни мельчайшие детали', reward: 18,
+                        game: 'memory_advanced', card: 1 },
+                    { id: 'l3_4', title: '🧩 Анализ сюжета', desc: 'Найди причинно-следственные связи', reward: 18,
+                        game: 'logic_analogies', card: 1 },
+                    { id: 'l3_5', title: '📚 Сравнение', desc: 'Сравни героев', reward: 18, game: 'fairy_tale', card: 2 },
+                    { id: 'l3_6', title: '🎨 Эпитеты', desc: 'Найди выразительные средства', reward: 18,
+                    game: 'fairy_tale', card: 2 },
                 ],
                 4: [
-                    { id: 'l4_1', title: '📖 Анализ текста', desc: 'Найди главную мысль', reward: 15, game: 'text_analysis' },
-                    { id: 'l4_2', title: '🎭 Эпитеты', desc: 'Найди выразительные средства', reward: 12, game: 'epithets' },
-                    { id: 'l4_3', title: '📚 Биография', desc: 'Узнай писателя', reward: 15, game: 'biography' },
+                    { id: 'l4_1', title: '📖 Анализ текста', desc: 'Найди главную мысль', reward: 15, game: 'fairy_tale',
+                        card: 0 },
+                    { id: 'l4_2', title: '🎭 Эпитеты', desc: 'Найди выразительные средства', reward: 12,
+                    game: 'fairy_tale', card: 0 },
+                    { id: 'l4_3', title: '🧠 Цитатная память', desc: 'Запомни точные цитаты', reward: 20,
+                        game: 'memory_advanced', card: 1 },
+                    { id: 'l4_4', title: '🧩 Литературные параллели', desc: 'Найди скрытые связи', reward: 20,
+                        game: 'logic_analogies', card: 1 },
+                    { id: 'l4_5', title: '📚 Биография', desc: 'Узнай писателя', reward: 18, game: 'fairy_tale', card: 2 },
+                    { id: 'l4_6', title: '🎨 Сочинение', desc: 'Напиши свой рассказ', reward: 20, game: 'fairy_tale',
+                        card: 2 },
                 ],
                 5: [
-                    { id: 'l5_1', title: '📖 Сочинение', desc: 'Напиши мини-сочинение', reward: 20, game: 'essay' },
-                    { id: 'l5_2', title: '🎭 Драма', desc: 'Элементы пьесы', reward: 15, game: 'drama' },
-                    { id: 'l5_3', title: '📚 Лирика', desc: 'Размер стиха', reward: 18, game: 'lyric' },
+                    { id: 'l5_1', title: '📖 Сочинение', desc: 'Напиши мини-сочинение', reward: 20, game: 'fairy_tale',
+                        card: 0 },
+                    { id: 'l5_2', title: '🎭 Драма', desc: 'Элементы пьесы', reward: 15, game: 'fairy_tale', card: 0 },
+                    { id: 'l5_3', title: '🧠 Эйдетическая память', desc: 'Фотографическое запоминание текста', reward: 25,
+                        game: 'memory_advanced', card: 1 },
+                    { id: 'l5_4', title: '🧩 Интертекстуальность', desc: 'Найди отсылки и аллюзии', reward: 25,
+                        game: 'logic_analogies', card: 1 },
+                    { id: 'l5_5', title: '📚 Лирика', desc: 'Размер стиха', reward: 22, game: 'fairy_tale', card: 2 },
+                    { id: 'l5_6', title: '🎨 Критический анализ', desc: 'Напиши рецензию', reward: 25, game: 'fairy_tale',
+                        card: 2 },
                 ]
             },
             world: {
                 kindergarten: [
-                    { id: 'w_k1', title: '🌈 Времена года', desc: 'Признаки сезонов', reward: 5, game: 'seasons' },
-                    { id: 'w_k2', title: '🐾 Животные', desc: 'Кто где живёт?', reward: 5, game: 'animal_homes' },
-                    { id: 'w_k3', title: '🌳 Растения', desc: 'Части растения', reward: 5, game: 'plant_parts' },
+                    { id: 'w_k1', title: '🌈 Времена года', desc: 'Признаки сезонов', reward: 5, game: 'seasons', card: 0 },
+                    { id: 'w_k2', title: '🐾 Животные', desc: 'Кто где живёт?', reward: 5, game: 'animal_homes', card: 0 },
+                    { id: 'w_k3', title: '🧠 Запомни животных', desc: 'Кто за кем стоял?', reward: 8,
+                        game: 'memory_kindergarten', card: 1 },
+                    { id: 'w_k4', title: '🧩 Природная логика', desc: 'Что к чему относится?', reward: 8,
+                        game: 'logic_analogies', card: 1 },
+                    { id: 'w_k5', title: '🌳 Растения', desc: 'Части растения', reward: 10, game: 'seasons', card: 2 },
+                    { id: 'w_k6', title: '🌍 Планета', desc: 'Что ты знаешь о Земле?', reward: 10, game: 'planets',
+                    card: 2 },
                 ],
                 1: [
-                    { id: 'w1_1', title: '🌍 Природа', desc: 'Живая и неживая природа', reward: 8, game: 'nature' },
-                    { id: 'w1_2', title: '🐦 Птицы', desc: 'Перелётные птицы', reward: 8, game: 'birds' },
-                    { id: 'w1_3', title: '🌡️ Погода', desc: 'Погодные явления', reward: 10, game: 'weather' },
+                    { id: 'w1_1', title: '🌍 Природа', desc: 'Живая и неживая природа', reward: 8, game: 'seasons',
+                    card: 0 },
+                    { id: 'w1_2', title: '🐦 Птицы', desc: 'Перелётные птицы', reward: 8, game: 'animals', card: 0 },
+                    { id: 'w1_3', title: '🧠 Запомни явления', desc: 'Погодные явления по порядку', reward: 10,
+                        game: 'memory_positions', card: 1 },
+                    { id: 'w1_4', title: '🧩 Экологическая логика', desc: 'Кто что ест?', reward: 10,
+                    game: 'logic_analogies', card: 1 },
+                    { id: 'w1_5', title: '🌡️ Погода', desc: 'Погодные явления', reward: 12, game: 'seasons', card: 2 },
+                    { id: 'w1_6', title: '🗺️ Мой город', desc: 'Что ты знаешь о своём городе?', reward: 12,
+                        game: 'compass', card: 2 },
                 ],
                 2: [
-                    { id: 'w2_1', title: '🗺️ Ориентирование', desc: 'Стороны горизонта', reward: 12, game: 'compass' },
-                    { id: 'w2_2', title: '🌊 Водоёмы', desc: 'Виды водоёмов', reward: 10, game: 'water_bodies' },
-                    { id: 'w2_3', title: '🏔️ Формы земли', desc: 'Горы, равнины', reward: 12, game: 'landforms' },
+                    { id: 'w2_1', title: '🗺️ Ориентирование', desc: 'Стороны горизонта', reward: 12, game: 'compass',
+                        card: 0 },
+                    { id: 'w2_2', title: '🌊 Водоёмы', desc: 'Виды водоёмов', reward: 10, game: 'seasons', card: 0 },
+                    { id: 'w2_3', title: '🧠 Географическая память', desc: 'Запомни расположение', reward: 15,
+                        game: 'memory_advanced', card: 1 },
+                    { id: 'w2_4', title: '🧩 Природные цепочки', desc: 'Выстрой пищевую цепь', reward: 15,
+                        game: 'logic_patterns', card: 1 },
+                    { id: 'w2_5', title: '🏔️ Формы земли', desc: 'Горы, равнины', reward: 14, game: 'seasons', card: 2 },
+                    { id: 'w2_6', title: '🦋 Животные', desc: 'Кто где обитает?', reward: 14, game: 'animal_homes',
+                    card: 2 },
                 ],
                 3: [
-                    { id: 'w3_1', title: '🌍 Природные зоны', desc: 'Определи зону', reward: 15, game: 'natural_zones' },
-                    { id: 'w3_2', title: '🦋 Цепи питания', desc: 'Пищевая цепочка', reward: 12, game: 'food_chain' },
-                    { id: 'w3_3', title: '🗺️ Карта России', desc: 'Города России', reward: 15, game: 'russia_map' },
+                    { id: 'w3_1', title: '🌍 Природные зоны', desc: 'Определи зону', reward: 15, game: 'seasons',
+                    card: 0 },
+                    { id: 'w3_2', title: '🦋 Цепи питания', desc: 'Пищевая цепочка', reward: 12, game: 'animal_homes',
+                        card: 0 },
+                    { id: 'w3_3', title: '🧠 Запомни карту', desc: 'Где что находится?', reward: 18,
+                        game: 'memory_positions', card: 1 },
+                    { id: 'w3_4', title: '🧩 Экосистемная логика', desc: 'Что будет, если...?', reward: 18,
+                        game: 'logic_analogies', card: 1 },
+                    { id: 'w3_5', title: '🗺️ Карта России', desc: 'Города России', reward: 18, game: 'compass', card: 2 },
+                    { id: 'w3_6', title: '🌿 Растения', desc: 'Определи растение', reward: 18, game: 'seasons', card: 2 },
                 ],
                 4: [
-                    { id: 'w4_1', title: '🏛️ История', desc: 'Древняя Русь', reward: 15, game: 'ancient_rus' },
-                    { id: 'w4_2', title: '🌿 Экосистемы', desc: 'Лес, луг, водоём', reward: 12, game: 'ecosystems' },
-                    { id: 'w4_3', title: '🧭 Ископаемые', desc: 'Определи минералы', reward: 15, game: 'minerals' },
+                    { id: 'w4_1', title: '🏛️ История', desc: 'Древняя Русь', reward: 15, game: 'seasons', card: 0 },
+                    { id: 'w4_2', title: '🌿 Экосистемы', desc: 'Лес, луг, водоём', reward: 12, game: 'seasons', card: 0 },
+                    { id: 'w4_3', title: '🧠 Историческая память', desc: 'Запомни даты и события', reward: 20,
+                        game: 'memory_advanced', card: 1 },
+                    { id: 'w4_4', title: '🧩 Причинно-следственные связи', desc: 'Почему произошло событие?', reward: 20,
+                        game: 'logic_analogies', card: 1 },
+                    { id: 'w4_5', title: '🧭 Ископаемые', desc: 'Определи минералы', reward: 18, game: 'seasons',
+                    card: 2 },
+                    { id: 'w4_6', title: '🌍 Планеты', desc: 'Солнечная система', reward: 20, game: 'planets', card: 2 },
                 ],
                 5: [
-                    { id: 'w5_1', title: '🏛️ История', desc: 'Важные даты', reward: 18, game: 'history_dates' },
-                    { id: 'w5_2', title: '🔬 Наука', desc: 'Великие учёные', reward: 15, game: 'scientists' },
-                    { id: 'w5_3', title: '🌍 Страны', desc: 'Столицы государств', reward: 18, game: 'world_capitals' },
+                    { id: 'w5_1', title: '🏛️ История', desc: 'Важные даты', reward: 18, game: 'seasons', card: 0 },
+                    { id: 'w5_2', title: '🔬 Наука', desc: 'Великие учёные', reward: 15, game: 'seasons', card: 0 },
+                    { id: 'w5_3', title: '🧠 Хронологическая память', desc: 'Выстрой события по порядку', reward: 25,
+                        game: 'memory_advanced', card: 1 },
+                    { id: 'w5_4', title: '🧩 Научная логика', desc: 'Реши научные парадоксы', reward: 25,
+                        game: 'logic_analogies', card: 1 },
+                    { id: 'w5_5', title: '🌍 Страны', desc: 'Столицы государств', reward: 22, game: 'compass', card: 2 },
+                    { id: 'w5_6', title: '🚀 Космос', desc: 'Исследование космоса', reward: 25, game: 'planets', card: 2 },
                 ]
             }
         };
@@ -1365,7 +1953,7 @@
             }
 
             currentChildData = JSON.parse(childDataStr);
-            
+
             const userDoc = await db.collection('globalkids').doc(currentChildData.globalId).get();
             if (!userDoc.exists) {
                 alert('Аккаунт не найден');
@@ -1383,7 +1971,7 @@
             document.getElementById('userAvatar').textContent = data.fullName.charAt(0).toUpperCase();
 
             currentChildData = { ...data, globalId: currentChildData.globalId };
-            
+
             updateLevelButtons();
             showSubjects();
         }
@@ -1400,15 +1988,17 @@
                 if (newLevel !== currentLevel) {
                     currentLevel = newLevel;
                     updateLevelButtons();
-                    
+
                     await db.collection('globalkids').doc(currentChildData.globalId).update({
                         level: currentLevel
                     });
-                    
+
                     currentChildData.level = currentLevel;
-                    document.getElementById('dashLevel').textContent = levelNames[currentLevel] || currentLevel;
-                    
+                    document.getElementById('dashLevel').textContent = levelNames[currentLevel] ||
+                        currentLevel;
+
                     if (currentSubject) {
+                        currentCard = 0;
                         showSubjectTasks(currentSubject);
                     } else {
                         showSubjects();
@@ -1444,16 +2034,44 @@
             }).join('');
         }
 
-        window.showSubjectTasks = (subjectId) => {
+        window.showSubjectTasks = (subjectId, cardIndex = 0) => {
             currentSubject = subjectId;
+            currentCard = cardIndex;
             const subject = subjects.find(s => s.id === subjectId);
-            const tasks = tasksDatabase[subjectId][currentLevel] || [];
+            const allTasks = tasksDatabase[subjectId][currentLevel] || [];
+            const tasks = allTasks.filter(t => t.card === currentCard);
 
             document.getElementById('subjectsView').classList.add('hidden');
             document.getElementById('tasksView').classList.remove('hidden');
             document.getElementById('gameView').classList.add('hidden');
 
-            document.getElementById('tasksTitle').innerHTML = `${subject.icon} ${subject.name} - ${levelNames[currentLevel]}`;
+            document.getElementById('tasksTitle').innerHTML =
+                `${subject.icon} ${subject.name} - ${levelNames[currentLevel]}`;
+
+            // Вкладки карточек
+            const cardTabs = document.getElementById('cardTabs');
+            cardTabs.innerHTML = cardNames.map((name, idx) => {
+                const cardTasks = allTasks.filter(t => t.card === idx);
+                const cardCompleted = cardTasks.filter(t => completedTasks.includes(t.id)).length;
+                const cardTotal = cardTasks.length;
+                return `
+                    <button class="card-tab ${idx === currentCard ? 'active' : ''}" 
+                            onclick="showSubjectTasks('${subjectId}', ${idx})">
+                        ${name} (${cardCompleted}/${cardTotal})
+                    </button>
+                `;
+            }).join('');
+
+            // Проверка на завершение всех карточек
+            const allCardsTasks = allTasks.filter(t => t.card === currentCard);
+            const allCardsCompleted = allCardsTasks.every(t => completedTasks.includes(t.id));
+            const completionMsg = document.getElementById('completionMessage');
+            if (allCardsCompleted && allCardsTasks.length > 0) {
+                completionMsg.classList.remove('hidden');
+                completionMsg.textContent = '✅ Все задания этой карточки выполнены! Но ты можешь пройти их снова 😊';
+            } else {
+                completionMsg.classList.add('hidden');
+            }
 
             const tasksList = document.getElementById('tasksList');
             tasksList.innerHTML = tasks.map(task => {
@@ -1473,14 +2091,35 @@
                     </div>
                 `;
             }).join('');
+
+            // Проверка всех карточек предмета
+            checkAllCardsCompleted(subjectId);
         };
 
+        function checkAllCardsCompleted(subjectId) {
+            const allTasks = tasksDatabase[subjectId][currentLevel] || [];
+            const allCompleted = allTasks.every(t => completedTasks.includes(t.id));
+            const completionMsg = document.getElementById('completionMessage');
+
+            if (allCompleted && allTasks.length > 0) {
+                completionMsg.classList.remove('hidden');
+                completionMsg.innerHTML =
+                    '🎉 <b>Задания на сегодня выполнены!</b><br>Но ты можешь пройти их снова или выбрать другой предмет 😊';
+                confetti({ particleCount: 200, spread: 150, origin: { y: 0.4 } });
+            }
+        }
+
         window.startGame = (taskId, gameType, reward) => {
-            if (completedTasks.includes(taskId)) return;
+            if (completedTasks.includes(taskId) && taskId !== 'draw_shape') return;
 
             currentGame = { taskId, gameType, reward };
             gameScore = 0;
             gameQuestionIndex = 0;
+
+            if (gameType === 'draw_shape') {
+                startDrawShape();
+                return;
+            }
 
             const generator = questionGenerators[gameType];
             if (generator) {
@@ -1489,9 +2128,73 @@
                 currentGameQuestions = generateAddition(10);
             }
 
+            // Для игр на память с мгновенным показом
+            if (currentGameQuestions[0] && currentGameQuestions[0].memoryNumbers) {
+                document.getElementById('gameView').classList.remove('hidden');
+                document.getElementById('gameScore').classList.add('hidden');
+                showMemoryQuestion();
+                return;
+            }
+
             document.getElementById('gameView').classList.remove('hidden');
             document.getElementById('gameScore').classList.add('hidden');
             showGameQuestion();
+        };
+
+        function showMemoryQuestion() {
+            if (gameQuestionIndex >= 5) {
+                endGame();
+                return;
+            }
+
+            const question = currentGameQuestions[gameQuestionIndex];
+            const gameQuestion = document.getElementById('gameQuestion');
+            const gameArea = document.getElementById('gameArea');
+
+            gameQuestion.textContent = question.q;
+
+            if (question.memoryNumbers) {
+                gameArea.innerHTML = `
+                    <div class="memory-display" id="memoryDisplay">${question.memoryNumbers.join(', ')}</div>
+                    <div class="game-options" id="gameOptionsArea"></div>
+                `;
+                const display = document.getElementById('memoryDisplay');
+                const optionsArea = document.getElementById('gameOptionsArea');
+
+                // Показать числа на короткое время
+                setTimeout(() => {
+                    display.classList.add('hidden');
+                    optionsArea.innerHTML = question.options.map((opt, idx) => `
+                        <div class="game-option" onclick="checkMemoryAnswer(${idx}, ${question.correct})">
+                            ${opt}
+                        </div>
+                    `).join('');
+                }, question.displayTime || 500);
+            }
+        }
+
+        window.checkMemoryAnswer = (selected, correct) => {
+            const options = document.querySelectorAll('.game-option');
+            options.forEach((opt, idx) => {
+                opt.style.pointerEvents = 'none';
+                if (idx === correct) opt.classList.add('correct');
+                if (idx === selected && idx !== correct) opt.classList.add('wrong');
+            });
+
+            if (selected === correct) {
+                gameScore++;
+                confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 } });
+            }
+
+            setTimeout(() => {
+                gameQuestionIndex++;
+                if (currentGameQuestions[gameQuestionIndex] &&
+                    currentGameQuestions[gameQuestionIndex].memoryNumbers) {
+                    showMemoryQuestion();
+                } else {
+                    showGameQuestion();
+                }
+            }, 1500);
         };
 
         function showGameQuestion() {
@@ -1501,14 +2204,19 @@
             }
 
             const question = currentGameQuestions[gameQuestionIndex];
-            document.getElementById('gameQuestion').textContent = `Вопрос ${gameQuestionIndex + 1}/5: ${question.q}`;
-            
-            const optionsDiv = document.getElementById('gameOptions');
-            optionsDiv.innerHTML = question.options.map((opt, idx) => `
-                <div class="game-option" onclick="checkAnswer(${idx}, ${question.correct})">
-                    ${opt}
+            document.getElementById('gameQuestion').textContent =
+                `Вопрос ${gameQuestionIndex + 1}/5: ${question.q}`;
+
+            const gameArea = document.getElementById('gameArea');
+            gameArea.innerHTML = `
+                <div class="game-options">
+                    ${question.options.map((opt, idx) => `
+                        <div class="game-option" onclick="checkAnswer(${idx}, ${question.correct})">
+                            ${opt}
+                        </div>
+                    `).join('')}
                 </div>
-            `).join('');
+            `;
         }
 
         window.checkAnswer = (selected, correct) => {
@@ -1521,24 +2229,26 @@
 
             if (selected === correct) {
                 gameScore++;
-                confetti({
-                    particleCount: 50,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
+                confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 } });
             }
 
             setTimeout(() => {
                 gameQuestionIndex++;
-                showGameQuestion();
+                if (currentGameQuestions[gameQuestionIndex] &&
+                    currentGameQuestions[gameQuestionIndex].memoryNumbers) {
+                    showMemoryQuestion();
+                } else {
+                    showGameQuestion();
+                }
             }, 1500);
         };
 
         async function endGame() {
             document.getElementById('gameScore').classList.remove('hidden');
             document.getElementById('gameScore').textContent = `Результат: ${gameScore}/5`;
-            document.getElementById('gameQuestion').textContent = gameScore >= 3 ? '🎉 Отличная работа!' : '📚 Попробуй ещё раз!';
-            document.getElementById('gameOptions').innerHTML = '';
+            document.getElementById('gameQuestion').textContent = gameScore >= 3 ?
+                '🎉 Отличная работа!' : '📚 Попробуй ещё раз!';
+            document.getElementById('gameArea').innerHTML = '';
 
             if (gameScore >= 3) {
                 await completeTask(currentGame.taskId, currentGame.reward);
@@ -1546,10 +2256,11 @@
         }
 
         window.closeGame = () => {
+            if (memoryTimeout) clearTimeout(memoryTimeout);
             document.getElementById('gameView').classList.add('hidden');
             currentGame = null;
             if (currentSubject) {
-                showSubjectTasks(currentSubject);
+                showSubjectTasks(currentSubject, currentCard);
             } else {
                 showSubjects();
             }
@@ -1568,11 +2279,11 @@
 
             currentChildData.gloins = newGloins;
             currentChildData.completedTasks = completedTasks;
-            
+
             document.getElementById('dashGloins').textContent = `🪙 ${newGloins}`;
-            
+
             if (currentSubject) {
-                showSubjectTasks(currentSubject);
+                showSubjectTasks(currentSubject, currentCard);
             }
         }
 
@@ -1596,4 +2307,3 @@
     </script>
 </body>
 </html>
-
