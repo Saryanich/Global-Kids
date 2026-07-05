@@ -1,1 +1,506 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Global Kids - Задания</title>
 
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a237e">
+
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <style>
+        :root {
+            --bg-deep: #0d1b2a;
+            --accent-primary: #4fc3f7;
+            --accent-secondary: #ffb74d;
+            --accent-success: #81c784;
+            --text-primary: #ffffff;
+            --text-secondary: #b0bec5;
+            --blur: blur(20px);
+            --radius-card: 20px;
+            --radius-btn: 14px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a237e 0%, #0d1b2a 50%, #1b5e20 100%);
+            min-height: 100vh;
+            padding: 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .glass-card {
+            background: rgba(13, 27, 42, 0.85);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-radius: var(--radius-card);
+            border: 1px solid rgba(79, 195, 247, 0.25);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(79, 195, 247, 0.15);
+            padding: 1.5rem;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .user-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .user-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .user-info .class-badge {
+            display: inline-block;
+            background: rgba(79, 195, 247, 0.2);
+            color: #4fc3f7;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .gloins-display {
+            background: linear-gradient(135deg, #ffb74d, #f57c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .global-id-display {
+            background: rgba(79, 195, 247, 0.1);
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            font-family: 'Courier New', monospace;
+            color: #4fc3f7;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 1rem;
+            word-break: break-all;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .nav-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.6rem;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.04);
+            color: #90a4ae;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .nav-tab.active {
+            background: rgba(79, 195, 247, 0.2);
+            color: #4fc3f7;
+            border: 1px solid rgba(79, 195, 247, 0.3);
+        }
+
+        .task-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .task-card:hover {
+            border-color: rgba(79, 195, 247, 0.3);
+            background: rgba(255,255,255,0.07);
+        }
+
+        .task-card.completed {
+            border-color: rgba(129, 199, 132, 0.3);
+            background: rgba(129, 199, 132, 0.05);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .task-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .task-reward {
+            color: #ffb74d;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .task-desc {
+            color: #90a4ae;
+            font-size: 0.8rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .btn {
+            width: auto;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.25s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #81c784, #388e3c);
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: #90a4ae;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef5350, #c62828);
+            color: white;
+            width: 100%;
+            padding: 0.85rem;
+            border-radius: 14px;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 0.8rem;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .rank {
+            width: 30px;
+            font-weight: 700;
+            color: #ffb74d;
+        }
+
+        .name {
+            flex: 1;
+            margin: 0 0.5rem;
+        }
+
+        .score {
+            font-weight: 700;
+            color: #4fc3f7;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="container">
+        <div class="glass-card">
+            <div class="user-header">
+                <div class="user-info">
+                    <h3 id="dashName">Загрузка...</h3>
+                    <span class="class-badge" id="dashLevel">Уровень</span>
+                </div>
+                <div class="gloins-display" id="dashGloins">🪙 0 gloins</div>
+            </div>
+            <div class="global-id-display" id="dashGlobalId"></div>
+
+            <div class="nav-tabs">
+                <div class="nav-tab active" onclick="switchTab('tasks')">📋 Задания</div>
+                <div class="nav-tab" onclick="switchTab('leaderboard')">🏆 Рейтинг</div>
+            </div>
+
+            <div id="tasksContainer">
+                <div id="tasksList">Загрузка заданий...</div>
+            </div>
+
+            <div id="leaderboardContainer" class="hidden">
+                <h4 style="margin-bottom:1rem; color:#b0bec5;">🏆 Топ по gloins</h4>
+                <div id="leaderboardList">Загрузка рейтинга...</div>
+            </div>
+
+            <button class="btn btn-danger" onclick="logout()">🚪 Выйти</button>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6GGJxAiao77U7_9mBUEjftmS_FnSWbIw",
+            authDomain: "glob-data.firebaseapp.com",
+            projectId: "glob-data",
+            storageBucket: "glob-data.firebasestorage.app",
+            messagingSenderId: "122757049174",
+            appId: "1:122757049174:web:ebb425edd0e1a8ea9a44f7"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 40, density: { enable: true, value_area: 800 } },
+                color: { value: ['#4fc3f7', '#81c784', '#ffb74d'] },
+                shape: { type: 'circle' },
+                opacity: { value: 0.3, random: true },
+                size: { value: 2, random: true },
+                line_linked: { enable: true, distance: 150, color: '#4fc3f7', opacity: 0.1, width: 1 },
+                move: { enable: true, speed: 1, direction: 'none', random: true, out_mode: 'out' }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'grab' } },
+                modes: { grab: { distance: 140, line_linked: { opacity: 0.3 } } }
+            },
+            retina_detect: true
+        });
+
+        let currentChildData = null;
+        let completedTasks = [];
+
+        const tasksByLevel = {
+            kindergarten: [
+                { id: 'k1', title: '🍎 Сосчитай фрукты', desc: 'Посчитай от 1 до 10 и обратно', reward: 5, subject: 'Математика' },
+                { id: 'k2', title: '🔤 Выучи букву', desc: 'Назови 5 слов на букву "А"', reward: 5, subject: 'Чтение' },
+                { id: 'k3', title: '🌈 Назови цвета', desc: 'Назови 7 цветов радуги', reward: 5, subject: 'Окружающий мир' },
+                { id: 'k4', title: '🧩 Собери пазл', desc: 'Собери картинку из 6 частей', reward: 10, subject: 'Логика' },
+                { id: 'k5', title: '🎨 Нарисуй семью', desc: 'Нарисуй свою семью и расскажи о ней', reward: 10, subject: 'Творчество' },
+            ],
+            1: [
+                { id: '1_1', title: '➕ Сложение до 10', desc: 'Реши 5 примеров: 3+2, 7+1, 4+4, 6+3, 5+5', reward: 8, subject: 'Математика' },
+                { id: '1_2', title: '📖 Прочитай текст', desc: 'Прочитай короткий рассказ из 5 предложений', reward: 10, subject: 'Чтение' },
+                { id: '1_3', title: '✏️ Спиши слова', desc: 'Спиши 10 словарных слов без ошибок', reward: 8, subject: 'Русский язык' },
+                { id: '1_4', title: '🌳 Времена года', desc: 'Назови признаки каждого времени года', reward: 7, subject: 'Окружающий мир' },
+                { id: '1_5', title: '🔢 Счет до 100', desc: 'Посчитай десятками до 100', reward: 10, subject: 'Математика' },
+            ],
+            2: [
+                { id: '2_1', title: '➖ Вычитание до 20', desc: 'Реши 5 примеров: 15-7, 18-9, 12-5, 20-8, 16-7', reward: 10, subject: 'Математика' },
+                { id: '2_2', title: '📝 Диктант', desc: 'Напиши диктант из 20 слов без ошибок', reward: 15, subject: 'Русский язык' },
+                { id: '2_3', title: '📚 Пересказ', desc: 'Прочитай и перескажи рассказ (10 предложений)', reward: 12, subject: 'Литература' },
+                { id: '2_4', title: '🐾 Животные', desc: 'Назови 10 диких и 10 домашних животных', reward: 10, subject: 'Окружающий мир' },
+                { id: '2_5', title: '✖️ Таблица на 2,3', desc: 'Выучи таблицу умножения на 2 и 3', reward: 15, subject: 'Математика' },
+            ],
+            3: [
+                { id: '3_1', title: '✖️ Таблица умножения', desc: 'Реши 10 примеров на умножение до 10', reward: 15, subject: 'Математика' },
+                { id: '3_2', title: '📏 Периметр', desc: 'Найди периметр прямоугольника 5×3 см', reward: 12, subject: 'Математика' },
+                { id: '3_3', title: '📝 Части речи', desc: 'Определи части речи в 5 предложениях', reward: 12, subject: 'Русский язык' },
+                { id: '3_4', title: '🗺️ Города России', desc: 'Назови и покажи на карте 5 городов', reward: 10, subject: 'Окружающий мир' },
+                { id: '3_5', title: '🔤 English words', desc: 'Выучи 10 новых английских слов', reward: 15, subject: 'Английский язык' },
+            ],
+            4: [
+                { id: '4_1', title: '➗ Деление', desc: 'Реши 8 примеров на деление: 72:8, 54:6, 63:7...', reward: 15, subject: 'Математика' },
+                { id: '4_2', title: '📐 Площадь', desc: 'Найди площадь прямоугольника 7×4 см', reward: 12, subject: 'Математика' },
+                { id: '4_3', title: '📖 Падежи', desc: 'Просклоняй слово "школа" по падежам', reward: 15, subject: 'Русский язык' },
+                { id: '4_4', title: '🌍 Природные зоны', desc: 'Назови 5 природных зон России', reward: 12, subject: 'Окружающий мир' },
+                { id: '4_5', title: '🗣️ English dialogue', desc: 'Составь диалог на английском (6 реплик)', reward: 18, subject: 'Английский язык' },
+            ],
+            5: [
+                { id: '5_1', title: '🔢 Дроби', desc: 'Сложи дроби: 1/4 + 2/4, 3/8 + 2/8', reward: 18, subject: 'Математика' },
+                { id: '5_2', title: '📊 Проценты', desc: 'Найди 20% от 150 и 15% от 200', reward: 15, subject: 'Математика' },
+                { id: '5_3', title: '📝 Сочинение', desc: 'Напиши сочинение "Мой день" (10 предложений)', reward: 20, subject: 'Русский язык' },
+                { id: '5_4', title: '🏛️ История', desc: 'Расскажи о Древней Руси (5 фактов)', reward: 15, subject: 'История' },
+                { id: '5_5', title: '🔬 Наука', desc: 'Проведи опыт: смешай соду и уксус, опиши реакцию', reward: 20, subject: 'Окружающий мир' },
+            ]
+        };
+
+        const levelNames = {
+            'kindergarten': 'Детский сад',
+            '1': '1 класс', '2': '2 класс', '3': '3 класс', '4': '4 класс', '5': '5 класс'
+        };
+
+        async function loadChildData() {
+            const childDataStr = sessionStorage.getItem('currentChild');
+            if (!childDataStr) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            currentChildData = JSON.parse(childDataStr);
+            
+            // Загружаем актуальные данные из Firestore
+            const userDoc = await db.collection('globalkids').doc(currentChildData.globalId).get();
+            if (!userDoc.exists) {
+                alert('Аккаунт не найден');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const data = userDoc.data();
+            completedTasks = data.completedTasks || [];
+
+            document.getElementById('dashName').textContent = data.fullName;
+            document.getElementById('dashLevel').textContent = levelNames[data.level] || data.level;
+            document.getElementById('dashGloins').textContent = `🪙 ${data.gloins || 0} gloins`;
+            document.getElementById('dashGlobalId').textContent = `🔑 Global ID: ${currentChildData.globalId}`;
+
+            currentChildData = { ...data, globalId: currentChildData.globalId };
+            
+            await loadTasks();
+            await loadLeaderboard();
+        }
+
+        async function loadTasks() {
+            const level = currentChildData.level;
+            const tasks = tasksByLevel[level] || tasksByLevel['kindergarten'];
+            const tasksList = document.getElementById('tasksList');
+            
+            tasksList.innerHTML = tasks.map(task => {
+                const isCompleted = completedTasks.includes(task.id);
+                return `
+                    <div class="task-card ${isCompleted ? 'completed' : ''}">
+                        <div class="task-header">
+                            <span class="task-title">${task.title}</span>
+                            <span class="task-reward">🪙 +${task.reward}</span>
+                        </div>
+                        <div class="task-desc">${task.desc} | ${task.subject}</div>
+                        <button class="btn ${isCompleted ? 'btn-secondary' : 'btn-success'}" 
+                                onclick="${isCompleted ? '' : `completeTask('${task.id}', ${task.reward})`}"
+                                ${isCompleted ? 'disabled' : ''}>
+                            ${isCompleted ? '✅ Выполнено' : '✔️ Выполнить'}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.completeTask = async (taskId, reward) => {
+            if (completedTasks.includes(taskId)) return;
+
+            completedTasks.push(taskId);
+            const newGloins = (currentChildData.gloins || 0) + reward;
+
+            await db.collection('globalkids').doc(currentChildData.globalId).update({
+                completedTasks: completedTasks,
+                gloins: newGloins
+            });
+
+            currentChildData.gloins = newGloins;
+            currentChildData.completedTasks = completedTasks;
+            
+            document.getElementById('dashGloins').textContent = `🪙 ${newGloins} gloins`;
+            await loadTasks();
+            await loadLeaderboard();
+        };
+
+        async function loadLeaderboard() {
+            const level = currentChildData.level;
+            const snapshot = await db.collection('globalkids')
+                .where('level', '==', level)
+                .orderBy('gloins', 'desc')
+                .limit(20)
+                .get();
+
+            const leaderboardList = document.getElementById('leaderboardList');
+            let html = '';
+            let rank = 1;
+
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `${rank}`;
+                html += `
+                    <div class="leaderboard-item">
+                        <span class="rank">${medal}</span>
+                        <span class="name">${data.fullName || data.globalId}</span>
+                        <span class="score">🪙 ${data.gloins || 0}</span>
+                    </div>
+                `;
+                rank++;
+            });
+
+            if (html === '') {
+                html = '<p style="text-align:center; color:#90a4ae;">Пока никто не заработал gloins</p>';
+            }
+
+            leaderboardList.innerHTML = html;
+        }
+
+        window.switchTab = (tab) => {
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('tasksContainer').classList.add('hidden');
+            document.getElementById('leaderboardContainer').classList.add('hidden');
+
+            if (tab === 'tasks') {
+                document.querySelector('.nav-tab:first-child').classList.add('active');
+                document.getElementById('tasksContainer').classList.remove('hidden');
+                loadTasks();
+            } else {
+                document.querySelector('.nav-tab:last-child').classList.add('active');
+                document.getElementById('leaderboardContainer').classList.remove('hidden');
+                loadLeaderboard();
+            }
+        };
+
+        window.logout = async () => {
+            if (auth.currentUser) {
+                await auth.signOut();
+            }
+            sessionStorage.removeItem('currentChild');
+            window.location.href = 'index.html';
+        };
+
+        // Проверка авторизации при загрузке
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+            } else {
+                loadChildData();
+            }
+        });
+    </script>
+</body>
+</html>
