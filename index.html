@@ -332,6 +332,20 @@
             color: #4fc3f7;
             border: 1px solid rgba(79, 195, 247, 0.3);
         }
+
+        /* Стиль для Global ID */
+        .global-id-display {
+            background: rgba(79, 195, 247, 0.1);
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            font-family: 'Courier New', monospace;
+            color: #4fc3f7;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -346,8 +360,8 @@
             <h1>Global Kids</h1>
             <div class="subtitle">👧👦 Учись, играй, зарабатывай gloins!</div>
             <div class="input-group">
-                <label>Global ID</label>
-                <input type="text" id="loginGlobalId" placeholder="Введите ваш Global ID" autocomplete="username">
+                <label>Global ID ребёнка</label>
+                <input type="text" id="loginGlobalId" placeholder="Введите Global ID ребёнка" autocomplete="username">
             </div>
             <div class="input-group">
                 <label>Пароль</label>
@@ -355,7 +369,7 @@
             </div>
             <button class="btn btn-primary" onclick="login()">🚀 Войти</button>
             <div id="authMessage" class="message"></div>
-            <button class="btn btn-secondary" onclick="showRegister()">📝 Создать аккаунт</button>
+            <button class="btn btn-secondary" onclick="showRegister()">📝 Создать аккаунт ребёнка</button>
         </div>
 
         <!-- Экран регистрации -->
@@ -363,25 +377,27 @@
             <div class="logo-container">
                 <span class="logo-icon">📝</span>
             </div>
-            <h2 style="text-align:center; font-size:1.5rem; margin-bottom:1rem;">Регистрация</h2>
+            <h2 style="text-align:center; font-size:1.5rem; margin-bottom:1rem;">Регистрация ребёнка</h2>
+            
             <div class="input-group">
-                <label>Global ID (уникальный)</label>
-                <input type="text" id="regGlobalId" placeholder="child123">
-            </div>
-            <div class="input-group">
-                <label>Имя и Фамилия</label>
+                <label>Имя и Фамилия ребёнка</label>
                 <input type="text" id="regFullName" placeholder="Иван Иванов">
             </div>
             <div class="input-group">
-                <label>Email</label>
+                <label>Email ребёнка</label>
                 <input type="email" id="regEmail" placeholder="child@email.com">
             </div>
             <div class="input-group">
-                <label>Пароль</label>
+                <label>Пароль (мин. 6 символов)</label>
                 <input type="password" id="regPassword" placeholder="Минимум 6 символов">
             </div>
             <div class="input-group">
-                <label>Уровень (класс/сад)</label>
+                <label>Global ID взрослого (родитель/учитель)</label>
+                <input type="text" id="regAdultGlobalId" placeholder="Введите Global ID взрослого">
+                <div class="global-id-display" id="adultCheckResult" style="display:none;"></div>
+            </div>
+            <div class="input-group">
+                <label>Уровень обучения</label>
                 <select id="regLevel">
                     <option value="kindergarten">🏫 Детский сад</option>
                     <option value="1">📚 1 класс</option>
@@ -391,10 +407,7 @@
                     <option value="5">📚 5 класс</option>
                 </select>
             </div>
-            <div class="input-group">
-                <label>Global ID взрослого (родитель/учитель)</label>
-                <input type="text" id="regAdultGlobalId" placeholder="adult_global_id">
-            </div>
+            
             <button class="btn btn-success" onclick="register()">✅ Зарегистрироваться</button>
             <div id="regMessage" class="message"></div>
             <button class="btn btn-secondary" onclick="showLogin()">← Назад ко входу</button>
@@ -409,6 +422,7 @@
                 </div>
                 <div class="gloins-display" id="dashGloins">🪙 0 gloins</div>
             </div>
+            <div class="global-id-display" id="dashGlobalId" style="margin-bottom:1rem;"></div>
 
             <div class="nav-tabs">
                 <div class="nav-tab active" onclick="switchTab('tasks')">📋 Задания</div>
@@ -464,6 +478,82 @@
 
         let currentUserData = null;
         let completedTasks = [];
+        let verifiedAdultGlobalId = null;
+
+        // Функция генерации Global ID (как в IT Global)
+        function generateGlobalId() {
+            const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let result = '';
+            for (let i = 0; i < 22; i++) {
+                result += chars[Math.floor(Math.random() * chars.length)];
+            }
+            return result;
+        }
+
+        // Проверка существования Global ID в коллекции users (как в IT Global)
+        async function checkGlobalIdExists(globalId) {
+            try {
+                const usersRef = db.collection('users');
+                const q = usersRef.where('globalId', '==', globalId);
+                const snapshot = await q.get();
+                return !snapshot.empty;
+            } catch (error) {
+                console.error('Ошибка проверки Global ID:', error);
+                return false;
+            }
+        }
+
+        // Проверка Global ID взрослого при регистрации
+        async function verifyAdultGlobalId(globalId) {
+            if (!globalId || globalId.trim() === '') {
+                return { valid: false, message: 'Введите Global ID взрослого' };
+            }
+
+            const exists = await checkGlobalIdExists(globalId.trim());
+            
+            if (exists) {
+                // Получаем данные взрослого
+                const usersRef = db.collection('users');
+                const q = usersRef.where('globalId', '==', globalId.trim());
+                const snapshot = await q.get();
+                
+                if (!snapshot.empty) {
+                    const adultData = snapshot.docs[0].data();
+                    return {
+                        valid: true,
+                        message: `✅ Взрослый найден: ${adultData.fullName || adultData.email || 'Пользователь'}`,
+                        adultUid: snapshot.docs[0].id,
+                        adultData: adultData
+                    };
+                }
+            }
+            
+            return { valid: false, message: '❌ Global ID взрослого не найден в системе IT Global' };
+        }
+
+        // Обработчик проверки Global ID взрослого в реальном времени
+        document.addEventListener('DOMContentLoaded', () => {
+            const adultGlobalIdInput = document.getElementById('regAdultGlobalId');
+            if (adultGlobalIdInput) {
+                adultGlobalIdInput.addEventListener('blur', async () => {
+                    const globalId = adultGlobalIdInput.value.trim();
+                    if (globalId.length >= 22) {
+                        const result = await verifyAdultGlobalId(globalId);
+                        const resultDiv = document.getElementById('adultCheckResult');
+                        resultDiv.style.display = 'block';
+                        resultDiv.textContent = result.message;
+                        resultDiv.style.color = result.valid ? '#81c784' : '#ef5350';
+                        resultDiv.style.borderColor = result.valid ? '#81c784' : '#ef5350';
+                        
+                        if (result.valid) {
+                            verifiedAdultGlobalId = globalId;
+                        } else {
+                            verifiedAdultGlobalId = null;
+                        }
+                    }
+                });
+            }
+        });
 
         // Школьные задания по уровням
         const tasksByLevel = {
@@ -511,12 +601,6 @@
             ]
         };
 
-        async function getDeviceFingerprint() {
-            const ua = navigator.userAgent;
-            const screenInfo = `${screen.width}x${screen.height}x${screen.colorDepth}`;
-            return btoa(ua + screenInfo + navigator.language).substring(0, 40);
-        }
-
         function showMessage(elementId, text, isError = false) {
             const el = document.getElementById(elementId);
             if (el) {
@@ -529,6 +613,8 @@
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('registerScreen').classList.remove('hidden');
             document.getElementById('dashboardScreen').classList.add('hidden');
+            verifiedAdultGlobalId = null;
+            document.getElementById('adultCheckResult').style.display = 'none';
         };
 
         window.showLogin = () => {
@@ -538,25 +624,27 @@
         };
 
         window.register = async () => {
-            const globalId = document.getElementById('regGlobalId').value.trim().toLowerCase();
             const fullName = document.getElementById('regFullName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value;
-            const level = document.getElementById('regLevel').value;
             const adultGlobalId = document.getElementById('regAdultGlobalId').value.trim();
+            const level = document.getElementById('regLevel').value;
 
-            if (!globalId || !fullName || !email || !password) {
+            if (!fullName || !email || !password) {
                 return showMessage('regMessage', 'Заполните все обязательные поля', true);
             }
             if (password.length < 6) {
                 return showMessage('regMessage', 'Пароль должен быть минимум 6 символов', true);
             }
 
-            // Проверка уникальности Global ID
-            const existingQuery = await db.collection('globalkids')
-                .where('globalId', '==', globalId).get();
-            if (!existingQuery.empty) {
-                return showMessage('regMessage', 'Этот Global ID уже занят', true);
+            // Проверяем Global ID взрослого
+            if (!adultGlobalId) {
+                return showMessage('regMessage', 'Введите Global ID взрослого', true);
+            }
+
+            const adultVerification = await verifyAdultGlobalId(adultGlobalId);
+            if (!adultVerification.valid) {
+                return showMessage('regMessage', 'Global ID взрослого не найден в системе IT Global', true);
             }
 
             try {
@@ -564,30 +652,33 @@
                 const userCred = await auth.createUserWithEmailAndPassword(email, password);
                 const uid = userCred.user.uid;
 
+                // Генерируем Global ID для ребёнка (22 символа, как в IT Global)
+                const childGlobalId = generateGlobalId();
+
                 // Сохраняем в Firestore в папку globalkids
-                const deviceFingerprint = await getDeviceFingerprint();
-                await db.collection('globalkids').doc(globalId).set({
+                await db.collection('globalkids').doc(childGlobalId).set({
                     uid: uid,
-                    globalId: globalId,
+                    globalId: childGlobalId,
                     fullName: fullName,
                     email: email,
-                    passwordHash: btoa(password), // В реальном проекте не хранить пароль
                     level: level,
                     gloins: 0,
                     completedTasks: [],
                     adultGlobalId: adultGlobalId,
-                    deviceFingerprint: deviceFingerprint,
+                    adultUid: adultVerification.adultUid,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     lastLogin: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                showMessage('regMessage', '✅ Регистрация успешна!');
-                setTimeout(() => {
-                    document.getElementById('loginGlobalId').value = globalId;
+                showMessage('regMessage', `✅ Регистрация успешна! Ваш Global ID: ${childGlobalId}`);
+                
+                // Показываем Global ID и автоматически входим
+                setTimeout(async () => {
+                    document.getElementById('loginGlobalId').value = childGlobalId;
                     document.getElementById('loginPassword').value = password;
                     showLogin();
-                    login();
-                }, 1000);
+                    await login();
+                }, 2000);
             } catch (error) {
                 console.error('Ошибка регистрации:', error);
                 if (error.code === 'auth/email-already-in-use') {
@@ -599,7 +690,7 @@
         };
 
         window.login = async () => {
-            const globalId = document.getElementById('loginGlobalId').value.trim().toLowerCase();
+            const globalId = document.getElementById('loginGlobalId').value.trim();
             const password = document.getElementById('loginPassword').value;
 
             if (!globalId || !password) {
@@ -623,30 +714,16 @@
                 const userData = userDoc.data();
                 const email = userData.email;
 
-                // Автовход с проверкой устройства
-                const deviceFingerprint = await getDeviceFingerprint();
+                // Входим через Firebase Auth
+                await auth.signInWithEmailAndPassword(email, password);
+                
+                // Обновляем время последнего входа
+                await db.collection('globalkids').doc(globalId).update({
+                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                });
 
-                if (userData.deviceFingerprint === deviceFingerprint) {
-                    // Автовход - устройство известно
-                    await auth.signInWithEmailAndPassword(email, password);
-                    await db.collection('globalkids').doc(globalId).update({
-                        lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-                        deviceFingerprint: deviceFingerprint
-                    });
-                    currentUserData = userData;
-                    currentUserData.globalId = globalId;
-                    await loadDashboard();
-                } else {
-                    // Первый вход с устройства - всё равно пускаем (без 2FA)
-                    await auth.signInWithEmailAndPassword(email, password);
-                    await db.collection('globalkids').doc(globalId).update({
-                        lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-                        deviceFingerprint: deviceFingerprint
-                    });
-                    currentUserData = userData;
-                    currentUserData.globalId = globalId;
-                    await loadDashboard();
-                }
+                currentUserData = { ...userData, globalId: globalId };
+                await loadDashboard();
 
                 loginBtn.disabled = false;
                 loginBtn.textContent = '🚀 Войти';
@@ -682,6 +759,7 @@
             };
             document.getElementById('dashLevel').textContent = levelNames[currentUserData.level] || currentUserData.level;
             document.getElementById('dashGloins').textContent = `🪙 ${currentUserData.gloins || 0} gloins`;
+            document.getElementById('dashGlobalId').textContent = `🔑 Global ID: ${currentUserData.globalId}`;
 
             await loadTasks();
             await loadLeaderboard();
@@ -808,7 +886,7 @@
             }
         });
 
-        // Обработка Enter для входа
+        // Обработка Enter
         document.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 if (!document.getElementById('loginScreen').classList.contains('hidden')) {
