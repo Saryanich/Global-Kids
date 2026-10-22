@@ -611,13 +611,17 @@
         
         function generateGlobalId() {
             const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const range = 0x100000000;
+            const limit = Math.floor(range / chars.length) * chars.length;
+            const values = new Uint32Array(1);
             let result = '';
-            for (let i = 0; i < 22; i++) {
-                result += chars[Math.floor(Math.random() * chars.length)];
+            while (result.length < 22) {
+                crypto.getRandomValues(values);
+                if (values[0] >= limit) continue;
+                result += chars[values[0] % chars.length];
             }
             return result;
         }
-
         function showMessage(elementId, text, isError = false) {
             const el = document.getElementById(elementId);
             if (el) {
